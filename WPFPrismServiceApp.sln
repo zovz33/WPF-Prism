@@ -5,6 +5,18 @@ VisualStudioVersion = 17.6.33815.320
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WPFPrismServiceApp", "WPFPrismServiceApp\WPFPrismServiceApp.csproj", "{47F3B649-D8B8-4B61-A206-A49A2479A802}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WPFPrism.HomeModule", "WPFPrism.Navigation\WPFPrism.HomeModule.csproj", "{15BC136F-524D-4DA4-AAE3-8AF8DBA3E83A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{2D47BAB7-0D7D-4086-92E3-10A230354D1F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WPFPrism.ServiceModule", "WPFPrism.ServiceModule\WPFPrism.ServiceModule.csproj", "{7F66C558-71D4-4351-B384-6704B769E911}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WPFPrism.ManagementModule", "ManagementModule\WPFPrism.ManagementModule.csproj", "{CE925939-0407-42FB-AE3C-A724F2557BCF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WPFPrism.AnalyticsModule", "AnalyticsModule\WPFPrism.AnalyticsModule.csproj", "{3E4AE474-1C77-4591-A038-DFAA8BA9AF4F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFPrism.AuthModule", "AuthModule\WPFPrism.AuthModule.csproj", "{145CDEF0-6DBD-4595-B67F-2641F68512ED}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,9 +27,36 @@ Global
 		{47F3B649-D8B8-4B61-A206-A49A2479A802}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{47F3B649-D8B8-4B61-A206-A49A2479A802}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{47F3B649-D8B8-4B61-A206-A49A2479A802}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15BC136F-524D-4DA4-AAE3-8AF8DBA3E83A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15BC136F-524D-4DA4-AAE3-8AF8DBA3E83A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15BC136F-524D-4DA4-AAE3-8AF8DBA3E83A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15BC136F-524D-4DA4-AAE3-8AF8DBA3E83A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F66C558-71D4-4351-B384-6704B769E911}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F66C558-71D4-4351-B384-6704B769E911}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F66C558-71D4-4351-B384-6704B769E911}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F66C558-71D4-4351-B384-6704B769E911}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE925939-0407-42FB-AE3C-A724F2557BCF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE925939-0407-42FB-AE3C-A724F2557BCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE925939-0407-42FB-AE3C-A724F2557BCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE925939-0407-42FB-AE3C-A724F2557BCF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3E4AE474-1C77-4591-A038-DFAA8BA9AF4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E4AE474-1C77-4591-A038-DFAA8BA9AF4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E4AE474-1C77-4591-A038-DFAA8BA9AF4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E4AE474-1C77-4591-A038-DFAA8BA9AF4F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{145CDEF0-6DBD-4595-B67F-2641F68512ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{145CDEF0-6DBD-4595-B67F-2641F68512ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{145CDEF0-6DBD-4595-B67F-2641F68512ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{145CDEF0-6DBD-4595-B67F-2641F68512ED}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{15BC136F-524D-4DA4-AAE3-8AF8DBA3E83A} = {2D47BAB7-0D7D-4086-92E3-10A230354D1F}
+		{7F66C558-71D4-4351-B384-6704B769E911} = {2D47BAB7-0D7D-4086-92E3-10A230354D1F}
+		{CE925939-0407-42FB-AE3C-A724F2557BCF} = {2D47BAB7-0D7D-4086-92E3-10A230354D1F}
+		{3E4AE474-1C77-4591-A038-DFAA8BA9AF4F} = {2D47BAB7-0D7D-4086-92E3-10A230354D1F}
+		{145CDEF0-6DBD-4595-B67F-2641F68512ED} = {2D47BAB7-0D7D-4086-92E3-10A230354D1F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F5369AE7-3B67-4B4B-B862-08DE3A39716F}

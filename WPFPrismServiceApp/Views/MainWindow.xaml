@@ -6,11 +6,17 @@
         Title="{Binding Title}"   WindowStartupLocation="CenterScreen" 
         Loaded="Window_Loaded"
         ResizeMode="CanResize"
-        MinHeight="768" MinWidth="1024" WindowStyle="None" AllowsTransparency="True"
+        WindowStyle="None" AllowsTransparency="True"
         Style="{StaticResource {x:Type Window}}">
 
     <Grid>
-        <ContentControl HorizontalAlignment="Left" VerticalAlignment="Top"
-        prism:RegionManager.RegionName="ContentRegion" />
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <ContentControl HorizontalAlignment="Left" VerticalAlignment="Top" 
+        prism:RegionManager.RegionName="NavigationRegion" Grid.Column="0"/>
+        <ContentControl HorizontalAlignment="Left" VerticalAlignment="Stretch" 
+        prism:RegionManager.RegionName="ContentRegion" Grid.Column="1"/>
     </Grid>
 </Window>

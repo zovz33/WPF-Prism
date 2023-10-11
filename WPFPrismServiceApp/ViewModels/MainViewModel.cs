@@ -1,7 +1,8 @@
-﻿using WPFPrismServiceApp.Views;
-using Prism.Commands;
+﻿using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Regions;
+using WPFPrism.HomeModule.Views;
+using WPFPrismServiceApp.Views;
 
 namespace WPFPrismServiceApp.ViewModels
 {
@@ -15,24 +16,14 @@ namespace WPFPrismServiceApp.ViewModels
         }
 
         private readonly IRegionManager regionManager;
-        //private readonly IDialogService _dialogService;
-
-        public DelegateCommand<string> NavigationCommand { get; private set; }
-        public DelegateCommand DialogCommand { get; private set; }
 
         public MainViewModel(IRegionManager regionManager)
         {
             this.regionManager = regionManager;
-            // _dialogService = dialogService;
-            regionManager.RegisterViewWithRegion("ContentRegion", typeof(NavigationControl));
-            NavigationCommand = new DelegateCommand<string>(Navigation);
-            // DialogCommand = new DelegateCommand(ShowDialog);
+            regionManager.RegisterViewWithRegion("NavigationRegion", typeof(NavigationControl));
+            regionManager.RegisterViewWithRegion("ContentRegion", typeof(HomeView));
         }
 
-        private void Navigation(string content)
-        {
-            regionManager.Regions["ContentRegion"].RequestNavigate($"{content}View");
-        }
 
 
     }
