@@ -8,57 +8,73 @@
              xmlns:conveter="clr-namespace:WPFPrism.Infrastructure.Converters;assembly=WPFPrism.Infrastructure">
     <UserControl.Resources>
         <conveter:BoolToVisibilityConverter x:Key="boolToVisibilityConverter"/>
-    </UserControl.Resources>
-    <Grid>
+    </UserControl.Resources> 
+        <Grid x:Name="NavigationBar" Width="150">
 
-        <Grid x:Name="NavigationBar" Width="150"  HorizontalAlignment="Center" VerticalAlignment="Stretch">
- 
-            <Separator  Grid.RowSpan="2" Background="#202020"  Width="1" Height="Auto" HorizontalAlignment="Right" VerticalAlignment="Top"/>
-            <StackPanel Grid.Row="0"  Grid.Column="0" Height="Auto" Width="Auto" VerticalAlignment="Top" HorizontalAlignment="Stretch" Background="Transparent">
-                <StackPanel x:Name="NavJourn" Margin="0 5 0 0" Orientation="Horizontal" HorizontalAlignment="Stretch">
-                    <ui:Button Margin="0 0 0 0" Width="40" HorizontalAlignment="Left"
-                    Command="{Binding GoBackCommand}" Visibility="{Binding IsCanExcute,Converter={StaticResource boolToVisibilityConverter}}"
-                    Icon="ArrowLeft48" Appearance="Primary" />
-                    <ui:Button Margin="5 0 0 0" Width="40" HorizontalAlignment="Right"
-                    Command="{Binding ClearJournal}" Visibility="{Binding IsCanExcute,Converter={StaticResource boolToVisibilityConverter}}"
-                    Icon="ArrowCounterclockwise24" Appearance="Primary" />
-                    <ui:Button Margin="5 0 0 0" Width="40" HorizontalAlignment="Right"
-                    Command="{Binding GoForwardCommand}" Visibility="{Binding IsCanExcute,Converter={StaticResource boolToVisibilityConverter}}"
-                    Icon="ArrowRight48" Appearance="Primary" />
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            
+            <Separator  Grid.RowSpan="4" Background="#202020"  Width="1" Height="Auto" HorizontalAlignment="Right" VerticalAlignment="Stretch"/>
+            <Grid x:Name="NavJournalGrid" HorizontalAlignment="Stretch" VerticalAlignment="Top" Grid.Row="0" Margin="15">
+                <ui:Button Width="40" HorizontalAlignment="Left"
+                Command="{Binding GoBackCommand}" Visibility="{Binding IsCanExcuteGoBack,Converter={StaticResource boolToVisibilityConverter}}"
+                Icon="ArrowLeft48" Appearance="Primary" />
+                <ui:Button Width="40" HorizontalAlignment="Right"
+                Command="{Binding GoForwardCommand}" Visibility="{Binding IsCanExcuteGoForward,Converter={StaticResource boolToVisibilityConverter}}"
+                Icon="ArrowRight48" Appearance="Primary" />
+            </Grid>
+            <Grid x:Name="NavTopGrid" Grid.Row="1" Height="Auto" Margin="0 0 0 0" Width="Auto" VerticalAlignment="Top" HorizontalAlignment="Center">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="*"/> 
+            </Grid.RowDefinitions>
+            <ui:Button Icon="Home32" 
+                Grid.Row="0"
+                Width="120" Height="Auto" HorizontalAlignment="Center" VerticalAlignment="Center"
+                Command="{Binding NavigationCommand}"
+                CommandParameter="Home" Content="Главная" />
+            <ui:Button Icon="Search48" 
+                Grid.Row="1"
+                Width="120" Height="Auto" HorizontalAlignment="Center" VerticalAlignment="Center"
+                Command="{Binding NavigationCommand}"
+                CommandParameter="Service" Content="Услуги" />
+            <ui:Button Icon="Layer24" 
+                Grid.Row="2"
+                Width="120" Height="Auto" HorizontalAlignment="Center" VerticalAlignment="Center"
+                Command="{Binding NavigationCommand}"
+                CommandParameter="Manage" Content="Управление" />
+            <ui:Button Icon="DataHistogram24" 
+                Grid.Row="3"
+                Width="120" Height="Auto" HorizontalAlignment="Center" VerticalAlignment="Center"
+                Command="{Binding NavigationCommand}"
+                CommandParameter="Analytics" Content="Аналитика" />
+
+            </Grid>
+            <Grid Grid.Row="2" x:Name="BottomNavGrid" HorizontalAlignment="Center" VerticalAlignment="Bottom">
+            <StackPanel>
+            <ui:Button
+                Grid.Row="0"
+                Width="120" Height="Auto" HorizontalAlignment="Center" VerticalAlignment="Bottom"
+                Command="{Binding NavigationCommand}"
+                CommandParameter="Auth"  Content="Авторизация"/>
+            <ui:Button
+                Grid.Row="1" Appearance="Transparent"
+                Width="120" Height="Auto" HorizontalAlignment="Center" VerticalAlignment="Bottom"
+                Command="{Binding NavigationCommand}"
+                CommandParameter="Registr" Content="Регистрация" BorderThickness="0"/>
+
+            <ui:Button Icon="ArrowExit20"  
+                HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="5"
+                FontSize="20" Background="Transparent" BorderThickness="0"
+                Command="{Binding Logout}"/>
                 </StackPanel>
-
-                <ui:Button Icon="Home32" Margin="5" Width="120" Height="Auto" HorizontalAlignment="Center" 
-            Command="{Binding NavigationCommand}"
-            CommandParameter="Home" 
-            Content="Главная" />
-                <ui:Button Icon="Search48"  Margin="5" Width="120" Height="Auto" HorizontalAlignment="Center" 
-            Command="{Binding NavigationCommand}"
-            CommandParameter="Service"
-            Content="Услуги" />
-                <ui:Button Icon="Layer24" Margin="5" Width="120" Height="Auto" HorizontalAlignment="Center" 
-            Command="{Binding NavigationCommand}"
-            CommandParameter="Manage"
-            Content="Управление" />
-                <ui:Button Icon="DataHistogram24" Margin="5" Width="120" Height="Auto" HorizontalAlignment="Center" 
-            Command="{Binding NavigationCommand}"
-            CommandParameter="Analytics"
-            Content="Аналитика" />
-
-            </StackPanel>
-            <StackPanel Grid.Row="1" x:Name="BottomNavbar" HorizontalAlignment="Center" VerticalAlignment="Bottom">
-                <ui:Button Margin="5" Width="120" Height="Auto" HorizontalAlignment="Center" VerticalAlignment="Bottom"
-            Command="{Binding NavigationCommand}" Appearance="Secondary"  
-            CommandParameter="Auth"
-            Content="Авторизация"/>
-            <ui:Button Margin="5" Width="120" Height="Auto" HorizontalAlignment="Center" VerticalAlignment="Bottom"
-            Command="{Binding NavigationCommand}" Appearance="Transparent"
-            CommandParameter="Registr"
-            Content="Регистрация" BorderThickness="0"/>
-                
-                <ui:Button Margin="5"  HorizontalAlignment="Left" VerticalAlignment="Bottom"
-            Command="{Binding Logout}" Icon="ArrowExit20" FontSize="20" 
-            Background="Transparent" BorderThickness="0"/>
-            </StackPanel>
+            </Grid>
         </Grid> 
-    </Grid>
 </UserControl>

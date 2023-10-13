@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:prism="http://prismlibrary.com/" xmlns:effects="http://schemas.microsoft.com/netfx/2009/xaml/presentation"
         prism:ViewModelLocator.AutoWireViewModel="True"
-        Title="{Binding Title}"   WindowStartupLocation="CenterScreen" 
+        Title="{Binding Title}" WindowStartupLocation="CenterScreen" 
         Loaded="Window_Loaded"
         ResizeMode="CanResize"
         WindowStyle="None" AllowsTransparency="True"
@@ -11,10 +11,10 @@
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
-        <ContentControl HorizontalAlignment="Left" VerticalAlignment="Top" 
+        <ContentControl 
         prism:RegionManager.RegionName="NavigationRegion" Grid.Column="0"/>
         <ContentControl HorizontalAlignment="Left" VerticalAlignment="Stretch" 
         prism:RegionManager.RegionName="ContentRegion" Grid.Column="1"/>

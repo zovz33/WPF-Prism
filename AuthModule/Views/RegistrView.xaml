@@ -6,6 +6,6 @@
              xmlns:local="clr-namespace:WPFPrism.AuthModule.Views"
              mc:Ignorable="d">
     <Grid>
-            
+        <TextBlock Text="Registr" FontSize="50" Foreground="White"/>
     </Grid>
 </UserControl>
