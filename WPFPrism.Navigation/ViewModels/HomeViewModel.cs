@@ -1,27 +1,27 @@
-﻿using Prism.Mvvm;
-using Prism.Regions;
-using System;
-
+﻿using Prism.Regions;
+using WPFPrism.Infrastructure.Base;
 
 namespace WPFPrism.HomeModule.ViewModels
 {
-    public class HomeViewModel : BindableBase, INavigationAware
+    public class HomeViewModel : RegionViewModelBase
     {
 
+        #region Fields
+        private readonly IRegionManager _regionManager;
+        #endregion
 
-        public void OnNavigatedTo(NavigationContext navigationContext)
+        #region Properties
+        #endregion
+
+        #region Commands
+        #endregion
+
+        #region Excutes
+        #endregion
+
+        public HomeViewModel(IRegionManager regionManager) : base(regionManager)
         {
-
-        }
-
-        public bool IsNavigationTarget(NavigationContext navigationContext)
-        {
-            return true;
-        }
-
-        public void OnNavigatedFrom(NavigationContext navigationContext)
-        {
-        //    navigationContext.Parameters.Add("Person", Person);
+            _regionManager = regionManager;
         }
     }
 }

@@ -4,27 +4,26 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WPFPrismServiceApp.Views" 
-             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml" 
-             mc:Ignorable="d" MinHeight="768" MinWidth="120"
-             Height="auto" Width="auto">
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             xmlns:conveter="clr-namespace:WPFPrism.Infrastructure.Converters;assembly=WPFPrism.Infrastructure">
+    <UserControl.Resources>
+        <conveter:BoolToVisibilityConverter x:Key="boolToVisibilityConverter"/>
+    </UserControl.Resources>
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="auto" />
-            <ColumnDefinition />
-        </Grid.ColumnDefinitions>
-        <Grid x:Name="NavigationBar" Width="150"  HorizontalAlignment="Left" VerticalAlignment="Stretch">
+
+        <Grid x:Name="NavigationBar" Width="150"  HorizontalAlignment="Center" VerticalAlignment="Stretch">
  
-            <Separator  Grid.RowSpan="2" Background="#202020"  Width="1" Height="Auto" HorizontalAlignment="Right" VerticalAlignment="Stretch"/>
-            <StackPanel Grid.Row="0"  Grid.Column="0" Height="Auto" Width="Auto" VerticalAlignment="Top" HorizontalAlignment="Center" Background="Transparent">
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
-                    <ui:Button Margin="0 5 0 0" Width="40" HorizontalAlignment="Left"
-                    Command="{Binding GoBackCommand}" Visibility="{Binding GoForwardVisibility}" 
+            <Separator  Grid.RowSpan="2" Background="#202020"  Width="1" Height="Auto" HorizontalAlignment="Right" VerticalAlignment="Top"/>
+            <StackPanel Grid.Row="0"  Grid.Column="0" Height="Auto" Width="Auto" VerticalAlignment="Top" HorizontalAlignment="Stretch" Background="Transparent">
+                <StackPanel x:Name="NavJourn" Margin="0 5 0 0" Orientation="Horizontal" HorizontalAlignment="Stretch">
+                    <ui:Button Margin="0 0 0 0" Width="40" HorizontalAlignment="Left"
+                    Command="{Binding GoBackCommand}" Visibility="{Binding IsCanExcute,Converter={StaticResource boolToVisibilityConverter}}"
                     Icon="ArrowLeft48" Appearance="Primary" />
-                    <ui:Button Margin="5 5 0 0" Width="40" HorizontalAlignment="Right"
-                    Command="{Binding ClearJournal}" Visibility="{Binding ClearVisbility}" 
+                    <ui:Button Margin="5 0 0 0" Width="40" HorizontalAlignment="Right"
+                    Command="{Binding ClearJournal}" Visibility="{Binding IsCanExcute,Converter={StaticResource boolToVisibilityConverter}}"
                     Icon="ArrowCounterclockwise24" Appearance="Primary" />
-                    <ui:Button Margin="5 5 0 0" Width="40" HorizontalAlignment="Right"
-                    Command="{Binding GoForwardCommand}"  Visibility="{Binding GoForwardVisibility}" 
+                    <ui:Button Margin="5 0 0 0" Width="40" HorizontalAlignment="Right"
+                    Command="{Binding GoForwardCommand}" Visibility="{Binding IsCanExcute,Converter={StaticResource boolToVisibilityConverter}}"
                     Icon="ArrowRight48" Appearance="Primary" />
                 </StackPanel>
 
@@ -60,7 +59,6 @@
             Command="{Binding Logout}" Icon="ArrowExit20" FontSize="20" 
             Background="Transparent" BorderThickness="0"/>
             </StackPanel>
-        </Grid>
-        <ui:InfoBar Title="Title" Message="BindableMessage" />
+        </Grid> 
     </Grid>
 </UserControl>

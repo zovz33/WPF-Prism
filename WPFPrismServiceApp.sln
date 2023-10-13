@@ -15,7 +15,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WPFPrism.ManagementModule",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WPFPrism.AnalyticsModule", "AnalyticsModule\WPFPrism.AnalyticsModule.csproj", "{3E4AE474-1C77-4591-A038-DFAA8BA9AF4F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFPrism.AuthModule", "AuthModule\WPFPrism.AuthModule.csproj", "{145CDEF0-6DBD-4595-B67F-2641F68512ED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WPFPrism.AuthModule", "AuthModule\WPFPrism.AuthModule.csproj", "{145CDEF0-6DBD-4595-B67F-2641F68512ED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFPrism.Infrastructure", "WPFPrism.Infrastructure\WPFPrism.Infrastructure.csproj", "{AB4A753F-2873-457E-AEF4-9BE8262A8916}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,6 +49,10 @@ Global
 		{145CDEF0-6DBD-4595-B67F-2641F68512ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{145CDEF0-6DBD-4595-B67F-2641F68512ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{145CDEF0-6DBD-4595-B67F-2641F68512ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB4A753F-2873-457E-AEF4-9BE8262A8916}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB4A753F-2873-457E-AEF4-9BE8262A8916}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB4A753F-2873-457E-AEF4-9BE8262A8916}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB4A753F-2873-457E-AEF4-9BE8262A8916}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

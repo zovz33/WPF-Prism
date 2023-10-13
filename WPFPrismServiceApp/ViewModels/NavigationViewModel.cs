@@ -1,39 +1,59 @@
 ﻿using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Regions;
+using Prism.Services.Dialogs;
 using System.Windows;
+using WPFPrismServiceApp.Views;
 
 namespace WPFPrismServiceApp.ViewModels
 {
     public class NavigationViewModel : BindableBase
     {
-        private IRegionManager _regionManager;
 
-        private IRegionNavigationService navigationService;
+        #region Fields
         private IRegionNavigationJournal _journal;
+        private readonly IRegionManager _regionManager;
+        #endregion
 
-        public string NavigationParameters { get; set; }
-        public string NavigationReceive { get; set; }
-        public string NavigationRequest { get; set; }
+        #region Properties
 
+        private bool _isCanExcute;
+        public bool IsCanExcute
+        {
+            get { return _isCanExcute; }
+            set { SetProperty(ref _isCanExcute, value); }
+        }
+        #endregion
+
+        #region Commands
         public DelegateCommand<string> NavigationCommand { get; private set; }
         public DelegateCommand GoBackCommand { get; private set; }
-        public DelegateCommand GoForwardCommand { get; private set; }
+
+        private DelegateCommand _goForwardCommand;
+        public DelegateCommand GoForwardCommand =>
+            _goForwardCommand ?? (_goForwardCommand = new DelegateCommand(ExecuteGoForwardCommand));
         public DelegateCommand ClearJournal { get; private set; }
+        #endregion
+
+        #region  Excutes
+        private void ExecuteGoForwardCommand()
+        {
+            _journal.GoForward();
+        }
+        #endregion
+
+
 
         public NavigationViewModel(IRegionManager regionManager)
         {
             _regionManager = regionManager;
-            NavigationParameters = nameof(NavigationParameters);
-            NavigationReceive = nameof(NavigationReceive);
-            NavigationRequest = nameof(NavigationRequest);
-            NavigationCommand = new DelegateCommand<string>(Navigation);
-            GoBackCommand = new DelegateCommand(GoBack, CanGoBack);
-            GoForwardCommand = new DelegateCommand(GoForward, CanGoForward);
+ 
+            NavigationCommand = new DelegateCommand<string>(Navigate);
+            GoBackCommand = new DelegateCommand(GoBack, CanGoBack); 
             ClearJournal = new DelegateCommand(Clear);
         }
 
-        private void Navigation(string View)
+        private void Navigate(string View)
         {
             View = $"{View}View";
             _regionManager.Regions["ContentRegion"].RequestNavigate(View, navigationCallback =>
@@ -53,8 +73,6 @@ namespace WPFPrismServiceApp.ViewModels
         {
             GoBackCommand.RaiseCanExecuteChanged();
             GoForwardCommand.RaiseCanExecuteChanged();
- 
- 
         }
 
         private void GoBack()
@@ -88,7 +106,6 @@ namespace WPFPrismServiceApp.ViewModels
             } 
             Refresh();
         }
-        // ------------- Visibility
 
  
 
