@@ -1,0 +1,66 @@
+﻿<UserControl x:Class="WPFPrism.AuthModule.Views.RegistrView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WPFPrism.AuthModule.Views" 
+             xmlns:conveter="clr-namespace:WPFPrism.Infrastructure.Converters;assembly=WPFPrism.Infrastructure" 
+             mc:Ignorable="d" Height="400">
+    <UserControl.Resources>
+        <conveter:PasswordConverter x:Key="PasswordConverter"/>
+    </UserControl.Resources>
+    <Grid x:Name="MainGrid" VerticalAlignment="Top" HorizontalAlignment="Center">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" x:Name="TopGrid">
+            <TextBlock Text="Регистрация" Foreground="#3F487F" FontSize="25"  HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold"/>
+        </Grid>
+
+        <Grid x:Name="CenterGrid" Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0">
+                <TextBlock Text="Логин" Style="{StaticResource AuthHintTextBlock}"/>
+                <Border Style="{StaticResource AuthBorderStyle}">
+                    <TextBox Text="{Binding RegisteredLoginId}"  Style="{StaticResource AuthBoxStyle}"/>
+                </Border>
+            </StackPanel>
+            <StackPanel Grid.Row="1">
+                 
+                <TextBlock Text="Пароль" Style="{StaticResource AuthHintTextBlock}"/>
+                <Border Style="{StaticResource AuthBorderStyle}">
+                    <PasswordBox  x:Name="Password" Style="{StaticResource AuthPassBoxStyle}" />
+                </Border>
+            </StackPanel>
+            <StackPanel Grid.Row="2">
+                 
+                <TextBlock Text="Подтвердите пароль" Style="{StaticResource AuthHintTextBlock}"/>
+                <Border Style="{StaticResource AuthBorderStyle}">
+                    <PasswordBox x:Name="ConfirmPassword" Style="{StaticResource AuthPassBoxStyle}"/>
+                </Border>
+            </StackPanel>
+        </Grid>
+        <Grid x:Name="BottomGrid" Grid.Row="2" Margin="0,40,0,0">
+            <Button Style="{StaticResource LoginButtonStyle}" Command="{Binding VerityCommand}" Content="Подтвердить" >
+                <Button.CommandParameter>
+                    <MultiBinding Converter="{ StaticResource PasswordConverter}">
+                        <Binding ElementName="Password"/>
+                        <Binding ElementName="ConfirmPassword"/>
+                    </MultiBinding>
+                </Button.CommandParameter>
+            </Button>
+        </Grid>
+        <Grid Grid.Row="3"  Margin="20,15,0,0">
+            <TextBlock Foreground="#DFE2E3" Text="Уже зарегистрированы?" Margin="10 0 0 0" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <TextBlock Style="{StaticResource AuthTextblockStyle}"   Text="Авторизироваться" HorizontalAlignment="Left" VerticalAlignment="Center" />
+
+        </Grid>
+    </Grid>
+</UserControl>

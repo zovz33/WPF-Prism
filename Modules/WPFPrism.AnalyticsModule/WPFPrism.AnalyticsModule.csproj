@@ -7,6 +7,6 @@
     <PackageReference Include="Prism.Wpf" Version="8.1.97" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\WPFPrism.Infrastructure\WPFPrism.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\WPFPrism.Infrastructure\WPFPrism.Infrastructure.csproj" /> 
   </ItemGroup>
 </Project>

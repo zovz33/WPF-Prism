@@ -16,6 +16,9 @@ using Prism.DryIoc;
 using Microsoft.EntityFrameworkCore;
 using WPFPrism.Infrastructure.Database;
 using DryIoc;
+using System.Configuration;
+using WPFPrism.Infrastructure.Models;
+using Microsoft.Data.SqlClient;
 
 namespace WPFPrismServiceApp
 {
@@ -29,7 +32,10 @@ namespace WPFPrismServiceApp
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-
+            MigrateDatabase();
+        }
+        private void MigrateDatabase()
+        {
             var context = Container.GetContainer().Resolve<IApplicationDbContext>();
             if (context is DbContext dbContext)
             {
@@ -42,7 +48,15 @@ namespace WPFPrismServiceApp
             ViewModelLocationProvider.Register<MainWindow, MainViewModel>();
             ViewModelLocationProvider.Register<NavigationControl, NavigationViewModel>();
 
-            containerRegistry.RegisterScoped<IApplicationDbContext>(sp => new ApplicationDbContext(new DbContextOptionsBuilder<ApplicationDbContext>().UseSqlServer("Data Source = LENOVO\\SQLEXPRESS01; Initial Catalog = WPFPrismServiceDb; User Id = 1; Password = 1; TrustServerCertificate = True").Options));
+            string connectionString = ConfigurationManager.ConnectionStrings["MSSQLConnection"].ConnectionString;
+
+            containerRegistry.RegisterScoped<IApplicationDbContext>(sp =>
+            {
+                var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
+                optionsBuilder.UseSqlServer(connectionString);
+                return new ApplicationDbContext(optionsBuilder.Options);
+            });
+
 
             containerRegistry.RegisterSingleton<IApplicationCommands, ApplicationCommands>();
 

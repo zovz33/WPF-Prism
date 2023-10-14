@@ -1,6 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
 using System;
-
+using System.Configuration;
 
 namespace WPFPrism.Infrastructure.Base
 {
@@ -9,7 +9,7 @@ namespace WPFPrism.Infrastructure.Base
         private readonly string _connectionString;
         public ServiceBase()
         {
-            _connectionString = "Data Source = LENOVO\\SQLEXPRESS01; Initial Catalog = WPFPrismServiceDb; User Id = 1; Password = 1; TrustServerCertificate = True";
+            _connectionString = ConfigurationManager.ConnectionStrings["MSSQLConnection"].ConnectionString;
         }
         protected SqlConnection GetConnection()
         {

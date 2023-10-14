@@ -1,8 +1,7 @@
-﻿using WPFPrism.AnalyticsModule.ViewModels;
-using WPFPrism.AnalyticsModule.Views;
-using Prism.Ioc;
+﻿using Prism.Ioc;
 using Prism.Modularity;
-using Prism.Regions;
+using WPFPrism.AnalyticsModule.ViewModels;
+using WPFPrism.AnalyticsModule.Views;
 
 namespace WPFPrism.AnalyticsModule
 {

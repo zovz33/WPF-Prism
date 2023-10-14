@@ -10,11 +10,11 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <ContentControl 
         prism:RegionManager.RegionName="NavigationRegion" Grid.Column="0"/>
         <ContentControl 
-        prism:RegionManager.RegionName="ContentRegion" Grid.Column="1"/>
+        prism:RegionManager.RegionName="ContentRegion" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
     </Grid>
 </Window>

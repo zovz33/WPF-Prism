@@ -67,11 +67,11 @@
                 CommandParameter="Registr" Content="Регистрация" 
                 BorderThickness="0"/>
 
-            <ui:Button Icon="ArrowExit20"  
+                <ui:Button Icon="ArrowExit20"  
                 HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10 5 0 5"
                 FontSize="20" Background="Transparent" BorderThickness="0"
                 Command="{Binding Logout}"/>
-                </StackPanel>
+            </StackPanel>
             </Grid>
         </Grid> 
 </UserControl>

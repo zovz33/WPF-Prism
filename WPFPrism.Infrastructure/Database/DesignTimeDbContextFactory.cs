@@ -1,7 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore.Design;
-using Microsoft.EntityFrameworkCore;
-using System;
-
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
+using System.Configuration;
 
 namespace WPFPrism.Infrastructure.Database
 {
@@ -9,9 +8,9 @@ namespace WPFPrism.Infrastructure.Database
     {
         public ApplicationDbContext CreateDbContext(string[] args)
         {
-
             var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
-            optionsBuilder.UseSqlServer("Data Source = LENOVO\\SQLEXPRESS01; Initial Catalog = WPFPrismServiceDb; User Id = 1; Password = 1; TrustServerCertificate = True");
+            string connectionString = ConfigurationManager.ConnectionStrings["MSSQLConnection"].ConnectionString;
+            optionsBuilder.UseSqlServer(connectionString);
 
             return new ApplicationDbContext(optionsBuilder.Options);
         }

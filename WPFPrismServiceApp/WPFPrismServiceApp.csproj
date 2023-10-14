@@ -3,18 +3,18 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net7.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
-  </PropertyGroup>
+  </PropertyGroup> 
   <ItemGroup>
     <PackageReference Include="Prism.DryIoc" Version="8.1.97" />
     <PackageReference Include="Prism.Wpf" Version="8.1.97" />
     <PackageReference Include="WPF-UI" Version="2.1.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AnalyticsModule\WPFPrism.AnalyticsModule.csproj" />
-    <ProjectReference Include="..\AuthModule\WPFPrism.AuthModule.csproj" />
-    <ProjectReference Include="..\ManagementModule\WPFPrism.ManagementModule.csproj" />
+    <ProjectReference Include="..\Modules\WPFPrism.AnalyticsModule\WPFPrism.AnalyticsModule.csproj" />
+    <ProjectReference Include="..\Modules\WPFPrism.AuthModule\WPFPrism.AuthModule.csproj" />
+    <ProjectReference Include="..\Modules\WPFPrism.HomeModule\WPFPrism.HomeModule.csproj" />
+    <ProjectReference Include="..\Modules\WPFPrism.ManagementModule\WPFPrism.ManagementModule.csproj" />
+    <ProjectReference Include="..\Modules\WPFPrism.ServiceModule\WPFPrism.ServiceModule.csproj" />
     <ProjectReference Include="..\WPFPrism.Infrastructure\WPFPrism.Infrastructure.csproj" />
-    <ProjectReference Include="..\WPFPrism.Navigation\WPFPrism.HomeModule.csproj" />
-    <ProjectReference Include="..\WPFPrism.ServiceModule\WPFPrism.ServiceModule.csproj" />
   </ItemGroup>
 </Project>

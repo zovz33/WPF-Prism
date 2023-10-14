@@ -1,6 +1,4 @@
-﻿using Prism.Mvvm;
-using Prism.Regions;
-using System;
+﻿using Prism.Regions;
 using WPFPrism.Infrastructure.Base;
 
 namespace WPFPrism.ServiceModule.ViewModels
