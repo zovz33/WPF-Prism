@@ -1,11 +1,10 @@
 ﻿using System;
-
+using WPFPrism.Infrastructure.Base;
 
 namespace WPFPrism.Infrastructure.Models
 {
-    public class Services
-    {
-        public int Id { get; set; }
+    public class Service : ModelBase
+    { 
         public string Name { get; set; }
         public string Description { get; set; }
     }

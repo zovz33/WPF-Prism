@@ -4,9 +4,7 @@
         xmlns:prism="http://prismlibrary.com/" xmlns:effects="http://schemas.microsoft.com/netfx/2009/xaml/presentation"
         prism:ViewModelLocator.AutoWireViewModel="True"
         Title="{Binding Title}" WindowStartupLocation="CenterScreen" 
-        Loaded="Window_Loaded"
-        ResizeMode="CanResize"
-        WindowStyle="None" AllowsTransparency="True"
+        ResizeMode="CanResize" AllowsTransparency="False"
         Style="{StaticResource {x:Type Window}}">
 
     <Grid>
@@ -16,7 +14,7 @@
         </Grid.ColumnDefinitions>
         <ContentControl 
         prism:RegionManager.RegionName="NavigationRegion" Grid.Column="0"/>
-        <ContentControl HorizontalAlignment="Left" VerticalAlignment="Stretch" 
+        <ContentControl 
         prism:RegionManager.RegionName="ContentRegion" Grid.Column="1"/>
     </Grid>
 </Window>

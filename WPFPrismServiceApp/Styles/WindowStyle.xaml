@@ -11,7 +11,8 @@
         <Setter Property="Width" Value="40"/>
         <Setter Property="Height" Value="30"/>
         <Setter Property="Foreground" Value="{DynamicResource CaptionFontBrush}"/>
-
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/> 
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
@@ -65,7 +66,6 @@
 
 
     <ControlTemplate x:Key="WindowTemplate" TargetType="{x:Type Window}">
-
         <Grid>
             <Border
                 Name="WindowBorder"
@@ -93,10 +93,8 @@
 
                         <!--#region Window Buttons-->
                         <StackPanel
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Top"
-                            Orientation="Horizontal"
-                            Margin="0">
+                            HorizontalAlignment="Right" 
+                            Orientation="Horizontal" >
                             <Button
                                 x:Name="MinimizeButton"
                                 Click="MinimizeButton_OnClick"
@@ -145,13 +143,11 @@
         </ControlTemplate.Triggers>
     </ControlTemplate>
     <Style TargetType="{x:Type Window}">
+        
         <Setter Property="MinWidth" Value="1024"/>
         <Setter Property="MinHeight" Value="768"/>
         <Setter Property="Width" Value="1500"/>
         <Setter Property="Height" Value="800"/>
-        <Setter Property="WindowStyle" Value="None"/>
-        <Setter Property="ResizeMode" Value="CanResize"/>
-        <Setter Property="AllowsTransparency" Value="True"/>
         <Setter Property="Foreground" Value="White"/>
         <Setter Property="UseLayoutRounding" Value="True"/>
         <Setter Property="TextOptions.TextFormattingMode" Value="Ideal"/>
