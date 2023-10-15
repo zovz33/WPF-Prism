@@ -1,11 +1,8 @@
 ﻿<UserControl x:Class="WPFPrism.AuthModule.Views.AuthView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:WPFPrism.AuthModule.Views" 
-             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
-             xmlns:conveter="clr-namespace:WPFPrism.Infrastructure.Converters;assembly=WPFPrism.Infrastructure"  
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+             xmlns:conveter="clr-namespace:WPFPrism.Infrastructure.Converters;assembly=WPFPrism.Infrastructure"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              Height="400">
     <UserControl.Resources>
         <conveter:BoolToVisibilityConverter x:Key="boolToVisibilityConverter"/>
@@ -31,9 +28,9 @@
                     <RowDefinition Height="auto"/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <TextBlock Text="LoginId" Style="{StaticResource AuthHintTextBlock}"/>
+                <TextBlock Text="Логин" Style="{StaticResource AuthHintTextBlock}"/>
                 <Border Style="{StaticResource AuthBorderStyle}">
-                    <TextBox Text="{Binding CurrentUser.LoginId,UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource AuthBoxStyle}" />
+                    <TextBox Text="{Binding CurrentUser.UserName,UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource AuthBoxStyle}" />
                 </Border>
             </Grid>
             <Grid Grid.Row="1">
@@ -41,19 +38,26 @@
                     <RowDefinition Height="auto"/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <TextBlock Text="Password" Style="{StaticResource AuthHintTextBlock}"/>
+                <TextBlock Text="Пароль" Style="{StaticResource AuthHintTextBlock}"/>
                 <Border Style="{StaticResource AuthBorderStyle}">
-                    <PasswordBox  x:Name="password" Style="{StaticResource AuthPassBoxStyle}" /> 
+                    <PasswordBox x:Name="Password" Style="{StaticResource AuthPassBoxStyle}" /> 
                 </Border>
             </Grid>
             <TextBlock Foreground="#D1D3D5" Grid.Row="2" Text="Забыли пароль?" HorizontalAlignment="Right" Margin="0,15,10,10"/>
         </Grid>
         <Grid Grid.Row="2">
-            <Button Command="{Binding LoginCommand}" Style="{StaticResource LoginButtonStyle}" CommandParameter="{Binding ElementName=password}" Content="Login"/>
+            <Button Command="{Binding LoginCommand}" CommandParameter="{Binding ElementName=Password}" Style="{StaticResource LoginButtonStyle}" Content="Авторизоваться"/>
         </Grid>
         <Grid Grid.Row="3" Margin="0 15 0 0">
             <TextBlock Foreground="#DFE2E3" Text="Нет аккаунта?" Margin="70 0 0 0" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-            <TextBlock Style="{StaticResource AuthTextblockStyle}" Text="Создать" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <TextBlock Style="{StaticResource AuthTextblockStyle}" Text="Создать" HorizontalAlignment="Left" VerticalAlignment="Center">
+            <i:Interaction.Triggers>
+              <i:EventTrigger EventName="MouseLeftButtonDown">
+                    <i:InvokeCommandAction Command="{Binding NavigationCommand}" CommandParameter="Registr"/>
+              </i:EventTrigger>
+            </i:Interaction.Triggers>
+            </TextBlock>
+            
         </Grid>
     </Grid>
 </UserControl>

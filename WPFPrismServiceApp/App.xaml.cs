@@ -1,24 +1,27 @@
-﻿using WPFPrism.AuthModule;
+﻿using DryIoc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using Prism.DryIoc;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Mvvm;
+using System;
+using System.Configuration;
+using System.Threading.Tasks;
 using System.Windows;
+using WPFPrism.AnalyticsModule;
+using WPFPrism.AuthModule;
 using WPFPrism.HomeModule;
+using WPFPrism.Infrastructure;
+using WPFPrism.Infrastructure.Database;
+using WPFPrism.Infrastructure.Services;
+using WPFPrism.Infrastructure.Services.Interface;
+using WPFPrism.ManagementModule;
 using WPFPrism.ServiceModule;
 using WPFPrismServiceApp.ViewModels;
+using WPFPrismServiceApp.ViewModels.DialogViewModels;
 using WPFPrismServiceApp.Views;
-using WPFPrism.ManagementModule;
-using WPFPrism.AnalyticsModule;
-using WPFPrism.Infrastructure.Services.Interface;
-using WPFPrism.Infrastructure.Services;
-using WPFPrism.Infrastructure;
-using Prism.DryIoc;
-using Microsoft.EntityFrameworkCore;
-using WPFPrism.Infrastructure.Database;
-using DryIoc;
-using System.Configuration;
-using WPFPrism.Infrastructure.Models;
-using Microsoft.Data.SqlClient;
+using WPFPrismServiceApp.Views.DialogViews;
 
 namespace WPFPrismServiceApp
 {
@@ -31,15 +34,23 @@ namespace WPFPrismServiceApp
         }
         protected override void OnStartup(StartupEventArgs e)
         {
-            base.OnStartup(e);
+            base.OnStartup(e); 
             MigrateDatabase();
         }
+        
         private void MigrateDatabase()
         {
             var context = Container.GetContainer().Resolve<IApplicationDbContext>();
-            if (context is DbContext dbContext)
+            try
             {
-                dbContext.Database.Migrate();
+                if (context is DbContext dbContext)
+                {
+                    dbContext.Database.Migrate();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString());
             }
         }
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
@@ -48,6 +59,7 @@ namespace WPFPrismServiceApp
             ViewModelLocationProvider.Register<MainWindow, MainViewModel>();
             ViewModelLocationProvider.Register<NavigationControl, NavigationViewModel>();
 
+            #region DataBase EntityFramework
             string connectionString = ConfigurationManager.ConnectionStrings["MSSQLConnection"].ConnectionString;
 
             containerRegistry.RegisterScoped<IApplicationDbContext>(sp =>
@@ -57,13 +69,20 @@ namespace WPFPrismServiceApp
                 return new ApplicationDbContext(optionsBuilder.Options);
             });
 
-
+            #endregion
             containerRegistry.RegisterSingleton<IApplicationCommands, ApplicationCommands>();
 
 
             #region Services
             containerRegistry.RegisterSingleton<IUserService, UserService>();
             #endregion
+
+
+
+            containerRegistry.RegisterDialog<AlertDialogView, AlertDialogViewModel>();
+            containerRegistry.RegisterDialog<SuccessDialogView, SuccessDialogViewModel>();
+            containerRegistry.RegisterDialog<WarningDialogView, WarningDialogViewModel>();
+            containerRegistry.RegisterDialogWindow<DialogWindow>();
         }
 
         protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog)

@@ -8,11 +8,11 @@ using WPFPrism.Infrastructure.Database;
 
 #nullable disable
 
-namespace WPFPrism.Infrastructure.Database
+namespace WPFPrism.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231014161428_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20231015152816_v1")]
+    partial class v1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

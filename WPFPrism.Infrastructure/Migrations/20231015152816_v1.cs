@@ -5,7 +5,7 @@
 namespace WPFPrism.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class ServiceDb : Migration
+    public partial class v1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

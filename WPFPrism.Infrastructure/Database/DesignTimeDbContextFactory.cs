@@ -9,8 +9,7 @@ namespace WPFPrism.Infrastructure.Database
         public ApplicationDbContext CreateDbContext(string[] args)
         {
             var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
-            string connectionString = ConfigurationManager.ConnectionStrings["MSSQLConnection"].ConnectionString;
-            optionsBuilder.UseSqlServer(connectionString);
+            optionsBuilder.UseSqlServer("Data Source = LENOVO\\SQLEXPRESS01; Initial Catalog = WPFPrismServiceDb; User Id = 1; Password = 1; TrustServerCertificate = True");
 
             return new ApplicationDbContext(optionsBuilder.Options);
         }
