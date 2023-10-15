@@ -20,7 +20,7 @@ namespace WPFPrismServiceApp.ViewModels.DialogViewModels
 
         #region Properties
 
-        private string _title = "Notification";
+        private string _title = "Уведомление";
         public string Title
         {
             get { return _title; }
@@ -57,7 +57,7 @@ namespace WPFPrismServiceApp.ViewModels.DialogViewModels
 
         public async virtual Task RaiseRequestClose(IDialogResult dialogResult)
         {
-            await Task.Delay(500);
+            await Task.Delay(2000);
             RequestClose?.Invoke(dialogResult);
         }
 

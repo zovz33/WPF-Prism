@@ -7,8 +7,8 @@ namespace WPFPrism.Infrastructure.Services.Interface
 {
     public interface IUserService
     {
-        Task<bool> RegisterAsync(string username, string password);
-        Task<bool> LoginAsync(string username, string password);
+        Task<string> LoginAsync(string username, string password);
+        Task<string> RegisterAsync(string username, string password);
         Task<List<User>> GetAllUsersAsync();
         Task<bool> UpdateUserAsync(string username, string newPassword);
         Task<bool> DeleteUserAsync(string username);

@@ -1,13 +1,11 @@
 ﻿using DryIoc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using Prism.DryIoc;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Mvvm;
 using System;
 using System.Configuration;
-using System.Threading.Tasks;
 using System.Windows;
 using WPFPrism.AnalyticsModule;
 using WPFPrism.AuthModule;
@@ -34,13 +32,13 @@ namespace WPFPrismServiceApp
         }
         protected override void OnStartup(StartupEventArgs e)
         {
-            base.OnStartup(e); 
+            base.OnStartup(e);
             MigrateDatabase();
         }
-        
+
         private void MigrateDatabase()
         {
-            var context = Container.GetContainer().Resolve<IApplicationDbContext>();
+            var context = Container.GetContainer().Resolve<ApplicationDbContext>();
             try
             {
                 if (context is DbContext dbContext)
@@ -62,7 +60,7 @@ namespace WPFPrismServiceApp
             #region DataBase EntityFramework
             string connectionString = ConfigurationManager.ConnectionStrings["MSSQLConnection"].ConnectionString;
 
-            containerRegistry.RegisterScoped<IApplicationDbContext>(sp =>
+            containerRegistry.RegisterScoped<ApplicationDbContext>(sp =>
             {
                 var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
                 optionsBuilder.UseSqlServer(connectionString);

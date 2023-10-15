@@ -3,8 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:WPFPrism.AuthModule.Views" 
-             xmlns:conveter="clr-namespace:WPFPrism.Infrastructure.Converters;assembly=WPFPrism.Infrastructure" 
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:conveter="clr-namespace:WPFPrism.Infrastructure.Converters;assembly=WPFPrism.Infrastructure"  
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
              mc:Ignorable="d" Height="400">
     <UserControl.Resources>
         <conveter:PasswordConverter x:Key="PasswordConverter"/>
@@ -29,38 +30,36 @@
             <StackPanel Grid.Row="0">
                 <TextBlock Text="Логин" Style="{StaticResource AuthHintTextBlock}"/>
                 <Border Style="{StaticResource AuthBorderStyle}">
-                    <TextBox Text="{Binding RegisteredLoginId}"  Style="{StaticResource AuthBoxStyle}"/>
+                    <TextBox Text="{Binding UserName}" Style="{StaticResource AuthBoxStyle}"/>
                 </Border>
             </StackPanel>
             <StackPanel Grid.Row="1">
                  
                 <TextBlock Text="Пароль" Style="{StaticResource AuthHintTextBlock}"/>
                 <Border Style="{StaticResource AuthBorderStyle}">
-                    <PasswordBox  x:Name="Password" Style="{StaticResource AuthPassBoxStyle}" />
+                    <ui:PasswordBox  Text="{Binding Password, Mode=TwoWay}" Style="{StaticResource AuthPassBoxStyle}" />
                 </Border>
             </StackPanel>
             <StackPanel Grid.Row="2">
                  
                 <TextBlock Text="Подтвердите пароль" Style="{StaticResource AuthHintTextBlock}"/>
                 <Border Style="{StaticResource AuthBorderStyle}">
-                    <PasswordBox x:Name="ConfirmPassword" Style="{StaticResource AuthPassBoxStyle}"/>
+                    <ui:PasswordBox Text="{Binding ConfirmPassword, Mode=TwoWay}" x:Name="ConfirmPassword" Style="{StaticResource AuthPassBoxStyle}"/>
                 </Border>
             </StackPanel>
         </Grid>
         <Grid x:Name="BottomGrid" Grid.Row="2" Margin="0,40,0,0">
-            <Button Style="{StaticResource LoginButtonStyle}" Command="{Binding VerityCommand}" Content="Подтвердить" >
-                <Button.CommandParameter>
-                    <MultiBinding Converter="{ StaticResource PasswordConverter}">
-                        <Binding ElementName="Password"/>
-                        <Binding ElementName="ConfirmPassword"/>
-                    </MultiBinding>
-                </Button.CommandParameter>
-            </Button>
+            <Button Style="{StaticResource LoginButtonStyle}" Command="{Binding VerityCommand}" Content="Подтвердить"/>
         </Grid>
         <Grid Grid.Row="3"  Margin="20,15,0,0">
             <TextBlock Foreground="#DFE2E3" Text="Уже зарегистрированы?" Margin="10 0 0 0" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-            <TextBlock Style="{StaticResource AuthTextblockStyle}"   Text="Авторизироваться" HorizontalAlignment="Left" VerticalAlignment="Center" />
-
+            <TextBlock Style="{StaticResource AuthTextblockStyle}" Text="Авторизоваться" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <i:Interaction.Triggers>
+              <i:EventTrigger EventName="MouseLeftButtonDown">
+                    <i:InvokeCommandAction Command="{Binding NavigateAuthCommand}" CommandParameter="Registr"/>
+              </i:EventTrigger>
+            </i:Interaction.Triggers>
+            
         </Grid>
     </Grid>
 </UserControl>

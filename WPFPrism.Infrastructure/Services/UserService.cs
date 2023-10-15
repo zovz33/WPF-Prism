@@ -1,6 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Azure.Core;
+using Microsoft.EntityFrameworkCore;
 using Prism.Services.Dialogs;
+using System.DirectoryServices.ActiveDirectory;
 using System.Security.Cryptography;
+using System.Windows;
 using WPFPrism.Infrastructure.Base;
 using WPFPrism.Infrastructure.Database;
 using WPFPrism.Infrastructure.Models;
@@ -10,74 +13,90 @@ namespace WPFPrism.Infrastructure.Services
 {
     public class UserService : IUserService
     {
-        private readonly ApplicationDbContext _context; 
-        public UserService(ApplicationDbContext context)
-        { 
-            _context = context;
-        }
-
-        public async Task<bool> RegisterAsync(string username, string password)
+        private readonly ApplicationDbContext _dbContext; 
+        public UserService(ApplicationDbContext dbContext)
         {
-            if (await _context.Users.AnyAsync(u => u.UserName == username))
-                throw new Exception("Пользователь уже существует");
-
-            var user = new User { UserName = username, Password = HashPassword(password) };
-            _context.Users.Add(user);
-
-            return await _context.SaveChangesAsync() > 0;
+            _dbContext = dbContext;
         }
 
-        public async Task<bool> LoginAsync(string username, string password)
+        public async Task<string> LoginAsync(string username, string password)
         {
             try
             {
-                User user = await _context.Users.SingleOrDefaultAsync(u => u.UserName == username);
+                User user = await _dbContext.Users.SingleOrDefaultAsync(u => u.UserName == username);
                 if (user == null)
                 {
-                    throw new Exception("Пользователь не найден!");
+                    return "Пользователь не найден";
                 }
-                if (!VerifyPassword(password, user.Password))
+
+                if (VerifyPassword(password, user.Password))
                 {
-                    throw new Exception("Неверный пароль!");
+                    return "Авторизация успешна";
                 }
-                return true;
+                else
+                {
+                    return "Неверный пароль";
+                }
             }
             catch (Exception ex)
             {
-                // Здесь можно обработать исключение или логировать его
-                return false; // Возвращаем false в случае ошибки
+                Console.WriteLine($"Ошибка: {ex}");
+                return "Ошибка при попытке авторизации";
             }
         }
+
+
+        public async Task<string> RegisterAsync(string username, string password)
+        {
+            try
+            {
+                if (await _dbContext.Users.AnyAsync(u => u.UserName == username))
+                {
+                    return "Пользователь с таким именем уже существует";
+                }
+                var user = new User { UserName = username, Password = HashPassword(password) };
+                await _dbContext.Users.AddAsync(user);
+
+                return await _dbContext.SaveChangesAsync() > 0 ? "Регистрация прошла успешно" : "Ошибка при регистрации";
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Ошибка, регистрация не удалась: {ex}");
+                MessageBox.Show($"Ошибка, регистрация не удалась: {ex.Message}");
+                return "Ошибка при регистрации";
+            }
+        }
+
 
 
 
 
         public async Task<List<User>> GetAllUsersAsync()
         {
-            return await _context.Users.ToListAsync();
+            return await _dbContext.Users.ToListAsync();
         }
 
         public async Task<bool> UpdateUserAsync(string username, string newPassword)
         {
-            var user = await _context.Users.SingleOrDefaultAsync(u => u.UserName == username);
+            var user = await _dbContext.Users.SingleOrDefaultAsync(u => u.UserName == username);
             if (user == null)
                 throw new Exception("Пользователь не найден");
 
             user.Password = HashPassword(newPassword);
-            _context.Users.Update(user);
+            _dbContext.Users.Update(user);
 
-            return await _context.SaveChangesAsync() > 0;
+            return await _dbContext.SaveChangesAsync() > 0;
         }
 
         public async Task<bool> DeleteUserAsync(string username)
         {
-            var user = await _context.Users.SingleOrDefaultAsync(u => u.UserName == username);
+            var user = await _dbContext.Users.SingleOrDefaultAsync(u => u.UserName == username);
             if (user == null)
                 throw new Exception("Пользователь не найден");
 
-            _context.Users.Remove(user);
+            _dbContext.Users.Remove(user);
 
-            return await _context.SaveChangesAsync() > 0;
+            return await _dbContext.SaveChangesAsync() > 0;
         }
 
         public async Task<bool> IsUserAuthenticated()

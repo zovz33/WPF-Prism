@@ -2,9 +2,6 @@
 using Prism.Regions;
 using Prism.Services.Dialogs;
 using System;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
 using WPFPrism.Infrastructure.Base;
 using WPFPrism.Infrastructure.Models;
 using WPFPrism.Infrastructure.Services.Interface;
@@ -24,13 +21,6 @@ namespace WPFPrism.AuthModule.ViewModels
 
         #region Properties
 
-        private bool _isCanExcute;
-        public bool IsCanExcute
-        {
-            get { return _isCanExcute; }
-            set { SetProperty(ref _isCanExcute, value); }
-        }
-
         private User _currentUser = new User();
         public User CurrentUser
         {
@@ -47,51 +37,47 @@ namespace WPFPrism.AuthModule.ViewModels
         public DelegateCommand<string> NavigationCommand =>
             _createAccountCommand ?? (_createAccountCommand = new DelegateCommand<string>(ExecuteNavigateCommand));
 
-        private DelegateCommand<PasswordBox> _loginCommand;
-        public DelegateCommand<PasswordBox> LoginCommand =>
-            _loginCommand ?? (_loginCommand = new DelegateCommand<PasswordBox>(ExecuteLoginCommandAsync));
+        private DelegateCommand _loginCommand;
+        public DelegateCommand LoginCommand =>
+            _loginCommand ?? (_loginCommand = new DelegateCommand(ExecuteLoginCommandAsync));
 
 
         #endregion
 
         #region Excutes
 
-        public async void ExecuteLoginCommandAsync(PasswordBox passwordBox)
+        public async void ExecuteLoginCommandAsync()
         {
-            if (string.IsNullOrEmpty(this.CurrentUser.UserName))
+            if (string.IsNullOrEmpty(this.CurrentUser.UserName)) // Валидация поле логина
             {
-                _dialogService.Show("WarningDialogView", new DialogParameters($"message={"Поле логина пустое!"}"), null);
+                _dialogService.Show("WarningDialogView", new DialogParameters($"message={"Поле логина пусто!"}"), null);
                 return;
             }
 
-            this.CurrentUser.Password = passwordBox.Password;
-            if (string.IsNullOrEmpty(this.CurrentUser.Password))
+            if (string.IsNullOrEmpty(this.CurrentUser.Password)) // Валидация поле пароля
             {
-                _dialogService.Show("WarningDialogView", new DialogParameters($"message={"Поле пароля пустое!"}"), null);
+                _dialogService.Show("WarningDialogView", new DialogParameters($"message={"Поле пароля пусто!"}"), null);
                 return;
             }
 
             try
             {
-                bool isLoginSuccessful = await _userService.LoginAsync(this.CurrentUser.UserName, this.CurrentUser.Password);
-                if (isLoginSuccessful == false)
+                string loginResult = await _userService.LoginAsync(this.CurrentUser.UserName, this.CurrentUser.Password);
+                if (loginResult == "Авторизация успешна")
                 {
-                    _dialogService.Show("WarningDialogView", new DialogParameters($"message={"Логин и пароль неверны!"}"), null);
-                    return;
+                    _dialogService.Show("SuccessDialogView", new DialogParameters($"message={"Приветствуем, " + CurrentUser.UserName + " ,вы успешно авторизировались!"}"), null);
+                    _regionManager.Regions["ContentRegion"].RequestNavigate($"HomeView");
                 }
                 else
                 {
-                    string View = $"HomeView";
-                    _regionManager.Regions["ContentRegion"].RequestNavigate(View);
+                    _dialogService.Show("WarningDialogView", new DialogParameters($"message={loginResult}"), null);
                 }
             }
             catch (Exception ex)
             {
-                string errorMessage = $"Ошибка: {ex.ToString()}";
                 _dialogService.Show("WarningDialogView", new DialogParameters($"message={"Ошибка взаимодействия с базой данных..."}"), null);
-        
-                Console.WriteLine(errorMessage);
-            } 
+                Console.WriteLine($"Ошибка: {ex}");
+            }
         }
 
 
@@ -112,12 +98,6 @@ namespace WPFPrism.AuthModule.ViewModels
             });
         }
 
-        private bool CanExecuteGoForwardCommand(PasswordBox passwordBox)
-        {
-            this.IsCanExcute = _journal != null && _journal.CanGoForward;
-            return true;
-        }
-
         #endregion
 
 
@@ -125,17 +105,17 @@ namespace WPFPrism.AuthModule.ViewModels
         {
             _regionManager = regionManager;
             _userService = userService;
-            _dialogService = dialogService; 
+            _dialogService = dialogService;
         }
 
-        public void OnNavigatedTo(NavigationContext navigationContext) // Действие при навигации на другую страницу
+        public void OnNavigatedTo(NavigationContext navigationContext) // Действие при навигации с RegisterView, то есть после регистрации вызывается 
         {
             _journal = navigationContext.NavigationService.Journal;
 
-            var loginId = navigationContext.Parameters["loginId"] as string;
-            if (loginId != null)
+            var Login = navigationContext.Parameters["Login"] as string;
+            if (Login != null)
             {
-                this.CurrentUser = new User() { UserName = loginId };
+                this.CurrentUser = new User() { UserName = Login };
             }
             LoginCommand.RaiseCanExecuteChanged();
         }
