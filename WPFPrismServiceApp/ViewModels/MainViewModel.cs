@@ -1,6 +1,7 @@
 ﻿using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Regions;
+using WPFPrism.AuthModule.Views;
 using WPFPrism.HomeModule.Views;
 using WPFPrism.Infrastructure.Base;
 using WPFPrismServiceApp.Views;
@@ -33,7 +34,7 @@ namespace WPFPrismServiceApp.ViewModels
         {
             _regionManager = regionManager;
             regionManager.RegisterViewWithRegion("NavigationRegion", typeof(NavigationControl));
-            regionManager.RegisterViewWithRegion("ContentRegion", typeof(HomeView));
+            regionManager.RegisterViewWithRegion("ContentRegion", typeof(AuthView));
         }
 
 

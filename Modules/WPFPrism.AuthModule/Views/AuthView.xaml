@@ -28,7 +28,7 @@
                 </Grid.RowDefinitions>
                 <TextBlock Text="Логин" Style="{StaticResource AuthHintTextBlock}"/>
                 <Border Style="{StaticResource AuthBorderStyle}">
-                    <TextBox Text="{Binding CurrentUser.UserName,UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource AuthBoxStyle}" />
+                    <TextBox Text="{Binding UserName,UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource AuthBoxStyle}" />
                 </Border>
             </Grid>
             <Grid Grid.Row="1">
@@ -38,7 +38,7 @@
                 </Grid.RowDefinitions>
                 <TextBlock Text="Пароль" Style="{StaticResource AuthHintTextBlock}"/>
                 <Border Style="{StaticResource AuthBorderStyle}">
-                    <ui:PasswordBox Text="{Binding CurrentUser.Password, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource AuthPassBoxStyle}" /> 
+                    <ui:PasswordBox Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource AuthPassBoxStyle}" /> 
                 </Border>
             </Grid>
             <TextBlock Foreground="#D1D3D5" Grid.Row="2" Text="Забыли пароль?" HorizontalAlignment="Right" Margin="0,15,10,10"/>
@@ -51,7 +51,7 @@
             <TextBlock Style="{StaticResource AuthTextblockStyle}" Text="Создать" HorizontalAlignment="Left" VerticalAlignment="Center">
             <i:Interaction.Triggers>
               <i:EventTrigger EventName="MouseLeftButtonDown">
-                    <i:InvokeCommandAction Command="{Binding NavigationCommand}" CommandParameter="Registr"/>
+                    <i:InvokeCommandAction Command="{Binding NavigateRegisterCommand}"/>
               </i:EventTrigger>
             </i:Interaction.Triggers>
             </TextBlock>

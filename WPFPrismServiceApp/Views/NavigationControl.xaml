@@ -45,32 +45,48 @@
             <StackPanel Orientation="Vertical">
             <ui:Button Icon="Home32" 
                 Style="{StaticResource NavTopButton}"
-                CommandParameter="Home" Content="Главная" />
+                CommandParameter="Home" Content="Главная"                 
+                Visibility="{Binding IsNotAuthButtonsVisible, Converter={StaticResource boolToVisibilityConverter}}"
+                IsEnabled="{Binding IsNotAuthButtonsVisible}"/>
             <ui:Button Icon="Search48" 
                 Style="{StaticResource NavTopButton}"
-                CommandParameter="Service" Content="Услуги" />
+                CommandParameter="Service" Content="Услуги"
+                Visibility="{Binding IsNotAuthButtonsVisible, Converter={StaticResource boolToVisibilityConverter}}"
+                IsEnabled="{Binding IsNotAuthButtonsVisible}"/>       
             <ui:Button Icon="Layer24" 
                 Style="{StaticResource NavTopButton}"
-                CommandParameter="Manage" Content="Управление" />
-            <ui:Button Icon="DataHistogram24" 
+                CommandParameter="Manage" Content="Управление" 
+                Visibility="{Binding IsNotAuthButtonsVisible, Converter={StaticResource boolToVisibilityConverter}}"
+                IsEnabled="{Binding IsNotAuthButtonsVisible}"/>
+                <ui:Button Icon="DataHistogram24" 
                 Style="{StaticResource NavTopButton}"
-                CommandParameter="Analytics" Content="Аналитика" />
+                CommandParameter="Analytics" Content="Аналитика" 
+                Visibility="{Binding IsNotAuthButtonsVisible, Converter={StaticResource boolToVisibilityConverter}}"
+                IsEnabled="{Binding IsNotAuthButtonsVisible}"/>
             </StackPanel>
         </Grid>
             <Grid Grid.Row="2" x:Name="BottomNavGrid" HorizontalAlignment="Stretch" VerticalAlignment="Bottom">
             <StackPanel>
-            <ui:Button 
+                <ui:Button 
                 Style="{StaticResource NavBottomButton}"
-                CommandParameter="Auth"  Content="Авторизация"/>
-            <ui:Button Appearance="Transparent"  
+                CommandParameter="Auth"  Content="Авторизация"
+                Visibility="{Binding IsAuthButtonsVisible, Converter={StaticResource boolToVisibilityConverter}}"
+                IsEnabled="{Binding IsAuthButtonsVisible}"/>
+
+                <ui:Button Appearance="Transparent"  
                 Style="{StaticResource NavBottomButton}"
                 CommandParameter="Registr" Content="Регистрация" 
-                BorderThickness="0"/>
+                BorderThickness="0"
+                Visibility="{Binding IsAuthButtonsVisible, Converter={StaticResource boolToVisibilityConverter}}"
+                IsEnabled="{Binding IsAuthButtonsVisible}"/>
 
-                <ui:Button Icon="ArrowExit20"  
+
+                <ui:Button Icon="ArrowExit20"
                 HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10 5 0 5"
                 FontSize="20" Background="Transparent" BorderThickness="0"
-                Command="{Binding Logout}"/>
+                Command="{Binding LogoutCommand}"
+                Visibility="{Binding IsNotAuthButtonsVisible, Converter={StaticResource boolToVisibilityConverter}}"
+                IsEnabled="{Binding IsNotAuthButtonsVisible}"/>
             </StackPanel>
             </Grid>
         </Grid> 

@@ -2,8 +2,8 @@
 using Prism.Regions;
 using Prism.Services.Dialogs;
 using System;
+using System.Windows;
 using WPFPrism.Infrastructure.Base;
-using WPFPrism.Infrastructure.Models;
 using WPFPrism.Infrastructure.Services.Interface;
 
 namespace WPFPrism.AuthModule.ViewModels
@@ -16,26 +16,33 @@ namespace WPFPrism.AuthModule.ViewModels
         private readonly IRegionManager _regionManager;
         private readonly IUserService _userService;
         private readonly IDialogService _dialogService;
-
         #endregion
 
         #region Properties
 
-        private User _currentUser = new User();
-        public User CurrentUser
+        private string _userName;
+        public string UserName
         {
-            get { return _currentUser; }
-            set { SetProperty(ref _currentUser, value); }
+            get { return _userName; }
+            set { SetProperty(ref _userName, value); }
         }
+
+        private string _password;
+        public string Password
+        {
+            get { return _password; }
+            set { SetProperty(ref _password, value); }
+        }
+
 
         public bool KeepAlive => true;
 
         #endregion
 
         #region Commands
-        private DelegateCommand<string> _createAccountCommand;
-        public DelegateCommand<string> NavigationCommand =>
-            _createAccountCommand ?? (_createAccountCommand = new DelegateCommand<string>(ExecuteNavigateCommand));
+        private DelegateCommand _navigateRegisterCommand;
+        public DelegateCommand NavigateRegisterCommand =>
+            _navigateRegisterCommand ?? (_navigateRegisterCommand = new DelegateCommand(ExecuteNavigateRegisterCommand));
 
         private DelegateCommand _loginCommand;
         public DelegateCommand LoginCommand =>
@@ -44,80 +51,67 @@ namespace WPFPrism.AuthModule.ViewModels
 
         #endregion
 
-        #region Excutes
-
-        public async void ExecuteLoginCommandAsync()
-        {
-            if (string.IsNullOrEmpty(this.CurrentUser.UserName)) // Валидация поле логина
-            {
-                _dialogService.Show("WarningDialogView", new DialogParameters($"message={"Поле логина пусто!"}"), null);
-                return;
-            }
-
-            if (string.IsNullOrEmpty(this.CurrentUser.Password)) // Валидация поле пароля
-            {
-                _dialogService.Show("WarningDialogView", new DialogParameters($"message={"Поле пароля пусто!"}"), null);
-                return;
-            }
-
-            try
-            {
-                string loginResult = await _userService.LoginAsync(this.CurrentUser.UserName, this.CurrentUser.Password);
-                if (loginResult == "Авторизация успешна")
-                {
-                    _dialogService.Show("SuccessDialogView", new DialogParameters($"message={"Приветствуем, " + CurrentUser.UserName + " ,вы успешно авторизировались!"}"), null);
-                    _regionManager.Regions["ContentRegion"].RequestNavigate($"HomeView");
-                }
-                else
-                {
-                    _dialogService.Show("WarningDialogView", new DialogParameters($"message={loginResult}"), null);
-                }
-            }
-            catch (Exception ex)
-            {
-                _dialogService.Show("WarningDialogView", new DialogParameters($"message={"Ошибка взаимодействия с базой данных..."}"), null);
-                Console.WriteLine($"Ошибка: {ex}");
-            }
-        }
-
-
-
-
-        // Навигация, вообщем то для кнопки "Нет аккаунта?Создать"
-        private void ExecuteNavigateCommand(string View)
-        {
-            View = $"{View}View";
-            _regionManager.Regions["ContentRegion"].RequestNavigate(View, navigationCallback =>
-            {
-                if ((bool)navigationCallback.Result)
-                {
-                }
-                else
-                {
-                }
-            });
-        }
-
-        #endregion
-
-
-        public AuthViewModel(IRegionManager regionManager, IUserService userService, IDialogService dialogService) : base(regionManager)
+        public AuthViewModel(IRegionManager regionManager, IUserService userService, IDialogService dialogService) : base(regionManager, userService)
         {
             _regionManager = regionManager;
             _userService = userService;
             _dialogService = dialogService;
         }
 
-        public void OnNavigatedTo(NavigationContext navigationContext) // Действие при навигации с RegisterView, то есть после регистрации вызывается 
+        public override void OnNavigatedTo(NavigationContext navigationContext)
         {
-            _journal = navigationContext.NavigationService.Journal;
-
-            var Login = navigationContext.Parameters["Login"] as string;
-            if (Login != null)
+            if (navigationContext.Parameters.ContainsKey("UserName"))
             {
-                this.CurrentUser = new User() { UserName = Login };
+                UserName = navigationContext.Parameters["UserName"] as string;
             }
-            LoginCommand.RaiseCanExecuteChanged();
         }
+
+        private void ShowErrorMessage(string message)
+        {
+            _dialogService.Show("WarningDialogView", new DialogParameters($"message={message}"), null);
+        }
+
+        #region Excutes
+
+        public async void ExecuteLoginCommandAsync()
+        {
+            if (string.IsNullOrEmpty(this.UserName)) // Валидация поле логина
+            {
+                ShowErrorMessage("Поле логина пусто.");
+                return;
+            }
+
+            if (string.IsNullOrEmpty(this.Password)) // Валидация поле пароля
+            {
+                ShowErrorMessage("Поле пароля пусто.");
+                return;
+            }
+            try
+            {
+                string loginResult = await _userService.LoginAsync(UserName, Password);
+                if (loginResult == "Авторизация успешна")
+                {
+                    _dialogService.Show("SuccessDialogView", new DialogParameters($"message=Приветствуем, {UserName}, вы успешно авторизировались!"), null);
+                    _regionManager.Regions["ContentRegion"].RequestNavigate("HomeView");
+                }
+                else
+                {
+                    ShowErrorMessage(loginResult);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Ошибка в методе: {ex}");
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void ExecuteNavigateRegisterCommand() //Навигация на RegistrView "Нет аккаунта?Создать"
+        {
+            _regionManager.RequestNavigate("ContentRegion", "RegistrView");
+        }
+
+        #endregion
     }
 }
+

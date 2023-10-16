@@ -1,5 +1,7 @@
 ﻿using Prism.Regions;
+using Prism.Services.Dialogs;
 using WPFPrism.Infrastructure.Base;
+using WPFPrism.Infrastructure.Services.Interface;
 
 namespace WPFPrism.ServiceModule.ViewModels
 {
@@ -8,6 +10,9 @@ namespace WPFPrism.ServiceModule.ViewModels
 
         #region Fields
         private readonly IRegionManager _regionManager;
+        private readonly IDialogService _dialogService;
+        private IRegionNavigationJournal _journal;
+        private readonly IUserService _userService;
         #endregion
 
         #region Properties
@@ -19,9 +24,10 @@ namespace WPFPrism.ServiceModule.ViewModels
         #region Excutes
         #endregion
 
-        public ServiceViewModel(IRegionManager regionManager) : base(regionManager)
+        public ServiceViewModel(IRegionManager regionManager, IUserService userService) : base(regionManager, userService)
         {
             _regionManager = regionManager;
+            _userService = userService;
         }
 
 

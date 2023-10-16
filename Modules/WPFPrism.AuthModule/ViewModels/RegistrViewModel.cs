@@ -2,13 +2,14 @@
 using Prism.Regions;
 using Prism.Services.Dialogs;
 using System;
+using System.Threading.Tasks;
 using System.Windows;
 using WPFPrism.Infrastructure.Base;
 using WPFPrism.Infrastructure.Services.Interface;
 
 namespace WPFPrism.AuthModule.ViewModels
 {
-    public class RegistrViewModel : RegionViewModelBase
+    public class RegistrViewModel : RegionViewModelBase 
     {
 
         #region Fields
@@ -20,12 +21,13 @@ namespace WPFPrism.AuthModule.ViewModels
 
         #region Properties
 
-        private string _login;
+        private string _userName;
         public string UserName
         {
-            get { return _login; }
-            set { SetProperty(ref _login, value); }
+            get { return _userName; }
+            set { SetProperty(ref _userName, value); }
         }
+
         private string _password;
         public string Password
         {
@@ -40,8 +42,6 @@ namespace WPFPrism.AuthModule.ViewModels
             set { SetProperty(ref _confirmPassword, value); }
         }
 
-        public bool IsUseRequest { get; set; }
-
         #endregion
 
         #region Commands
@@ -51,109 +51,126 @@ namespace WPFPrism.AuthModule.ViewModels
         public DelegateCommand NavigateAuthCommand =>
             _navigateAuthCommand ?? (_navigateAuthCommand = new DelegateCommand(ExecuteNavigateAuthCommand));
 
-        private DelegateCommand _verityCommand;
-        public DelegateCommand VerityCommand =>
-            _verityCommand ?? (_verityCommand = new DelegateCommand(ExecuteVerityCommand));
-
-
-        #endregion
-
-        #region Excutes 
-
-        void ExecuteNavigateAuthCommand()
-        {
-            Navigate("AuthView");
-        }
-
-        public async void ExecuteVerityCommand()
-        {
-            if (!RegisterValidation())
-            {
-                return;
-            }
-            this.IsUseRequest = true;
-            try
-            {
-                string registrationResult = await _userService.RegisterAsync(this.UserName, this.Password);
-                if (registrationResult == "Пользователь с таким именем уже существует")
-                {
-                    _dialogService.Show("WarningDialogView", new DialogParameters($"message={"Пользователь с таким именем уже существует."}"), null);
-                }
-                else if (registrationResult == "Регистрация прошла успешно")
-                {
-                    _dialogService.ShowDialog("SuccessDialogView", new DialogParameters($"message={$"Поздравляем с регистрацией, {UserName}"}"), null);
-                }
-                else
-                {
-                    _dialogService.Show("WarningDialogView", new DialogParameters($"message={"Ошибка при регистрации..."}"), null);
-                }
-            }
-            catch (Exception ex)
-            {
-                _dialogService.Show("WarningDialogView", new DialogParameters($"message={"Ошибка взаимодействия с базой данных..."}"), null);
-                Console.WriteLine($"Ошибка при регистрации: {ex}");
-                MessageBox.Show(ex.Message);
-            }
-        }
-
-
+        private DelegateCommand _verifyCommand;
+        public DelegateCommand RegistrCommand =>
+            _verifyCommand ?? (_verifyCommand = new DelegateCommand(ExecuteRegistrationCommand));
 
         #endregion
 
-        public RegistrViewModel(IRegionManager regionManager, IUserService userService, IDialogService dialogService) : base(regionManager)
+        public RegistrViewModel(IRegionManager regionManager, IUserService userService, IDialogService dialogService) : base(regionManager, userService)
         {
             _regionManager = regionManager;
             _userService = userService;
             _dialogService = dialogService;
         }
 
+        #region Excutes 
+
+        private void ExecuteNavigateAuthCommand()
+        {
+            var parameters = new NavigationParameters();
+            parameters.Add("UserName", UserName);
+            _regionManager.RequestNavigate("ContentRegion", "AuthView", parameters);
+        }
+
         private bool RegisterValidation()
         {
-            if (string.IsNullOrEmpty(this.UserName))
+            if (string.IsNullOrEmpty(UserName))
             {
-                _dialogService.Show("WarningDialogView", new DialogParameters($"message={"Поле логина пусто!"}"), null);
+                ShowErrorMessage("Поле логина пусто!");
                 return false;
             }
-            //
-            if (string.IsNullOrEmpty(this.Password))
+            if (string.IsNullOrEmpty(Password))
             {
-                _dialogService.Show("WarningDialogView", new DialogParameters($"message={"Поле пароля пусто!"}"), null);
+                ShowErrorMessage("Поле пароля пусто!");
                 return false;
             }
-            if (string.IsNullOrEmpty(this.ConfirmPassword))
+            if (string.IsNullOrEmpty(ConfirmPassword))
             {
-                _dialogService.Show("WarningDialogView", new DialogParameters($"message={"Вы не повторили пароль!"}"), null);
+                ShowErrorMessage("Вы не повторили пароль!");
                 return false;
             }
             if (Password.Trim() != ConfirmPassword.Trim())
             {
-                _dialogService.Show("WarningDialogView", new DialogParameters($"message={"Пароли различны!"}"), null);
+                ShowErrorMessage("Пароли различны!");
                 return false;
             }
-
             return true;
         }
 
-
-        private void Navigate(string navigatePath)
+        private void ShowErrorMessage(string message)
         {
-            if (navigatePath != null)
-                _regionManager.Regions["ContentRegion"].RequestNavigate(navigatePath);
+            _dialogService.Show("WarningDialogView", new DialogParameters($"message={message}"), null);
         }
 
-
-        public void ConfirmNavigationRequest(NavigationContext navigationContext, Action<bool> continuationCallback) // При перемещении
+        private void ShowSuccessMessage(string message)
         {
-            if (!string.IsNullOrEmpty(UserName) && this.IsUseRequest)
+            _dialogService.ShowDialog("SuccessDialogView", new DialogParameters($"message={message}"), null);
+        }
+
+        public async void ExecuteRegistrationCommand()
+        {
+            if (!RegisterValidation())
             {
-                _dialogService.ShowDialog("AlertDialog", new DialogParameters($"message={"Войти ли под зарегистрированным пользователем"}"), r =>
+                return;
+            }
+
+            try
+            {
+                await RegisterUser();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Ошибка в методе: {ex}");
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private async Task AutoLogin()
+        {
+            string loginResult = await _userService.LoginAsync(UserName, Password);
+            if (loginResult == "Авторизация успешна")
+            {
+                ShowSuccessMessage($"Приветствуем, {UserName}, вы успешно авторизировались!");
+                _regionManager.Regions["ContentRegion"].RequestNavigate("HomeView");
+            }
+            else
+            {
+                ShowErrorMessage(loginResult);
+            }
+        }
+
+        private async Task RegisterUser()
+        {
+            string registrationResult = await _userService.RegisterAsync(UserName, Password);
+            if (registrationResult == "Пользователь с таким именем уже существует")
+            {
+                ShowErrorMessage(registrationResult);
+            }
+            else if (registrationResult == "Регистрация прошла успешно")
+            {
+                ShowSuccessMessage($"Пользователь {UserName} успешно зарегистрирован.");
+                _dialogService.ShowDialog("AlertDialogView", new DialogParameters($"message=Хотите ли вы сразу авторизоваться?"), async r =>
                 {
                     if (r.Result == ButtonResult.Yes)
-                        navigationContext.Parameters.Add("Login", UserName);
+                    {
+                        await AutoLogin();
+                    }
+                    else if (r.Result == ButtonResult.No)
+                    {
+                        _regionManager.Regions["ContentRegion"].RequestNavigate("AuthView");
+                    }
                 });
             }
-            continuationCallback(true);
+            else
+            {
+                ShowErrorMessage("Ошибка при регистрации...");
+            }
         }
 
+        #endregion
     }
 }
+
+
+
