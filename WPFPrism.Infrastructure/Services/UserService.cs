@@ -1,6 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.Security.Cryptography;
-using System.Windows;
 using WPFPrism.Infrastructure.Database;
 using WPFPrism.Infrastructure.Models;
 using WPFPrism.Infrastructure.Services.Interface;
@@ -9,65 +7,87 @@ namespace WPFPrism.Infrastructure.Services
 {
     public class UserService : IUserService
     {
-        public event EventHandler AuthenticationStatusChanged;  
+        public event EventHandler AuthenticationStatusChanged;
         private readonly ApplicationDbContext _dbContext;
         public UserService(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
         }
 
-            public User CurrentUser { get; private set; }
-    public bool IsAuthenticated => CurrentUser != null;
+        public User CurrentUser { get; private set; }
+        public bool IsAuthenticated => CurrentUser != null;
 
-    public async Task<string> LoginAsync(string username, string password)
-    {
-        try
+        public async Task<string> LoginAsync(string username, string password)
         {
-            User user = await _dbContext.Users.SingleOrDefaultAsync(u => u.UserName == username);
-            if (user == null)
+            try
             {
-                return "Пользователь не найден";
-            }
+                User user = await _dbContext.Users.SingleOrDefaultAsync(u => u.UserName == username);
+                if (user == null)
+                {
+                    return "Пользователь не найден";
+                }
 
-            if (VerifyPassword(password, user.Password))
-            {
-                CurrentUser = user;
-                AuthenticationStatusChanged?.Invoke(this, EventArgs.Empty);
-                return "Авторизация успешна";
+                // Извлекаем соль из базы данных для данного пользователя
+                string salt = user.Salt;
+                 
+                string hashedPassword = BCrypt.Net.BCrypt.HashPassword(password, salt);
+
+                // Сравниваем хешированный пароль с хешем из базы данных
+                if (hashedPassword == user.Password)
+                {
+                    CurrentUser = user;
+                    AuthenticationStatusChanged?.Invoke(this, EventArgs.Empty);
+                    return "Авторизация успешна";
+                }
+                else
+                {
+                    return "Неверный пароль";
+                }
             }
-            else
+            catch (Exception ex)
             {
-                return "Неверный пароль";
+                // Обработка ошибок
+                return "Ошибка при попытке авторизации";
             }
         }
-        catch (Exception ex)
-        {
-        //    _logger.LogError(ex, "Ошибка при попытке авторизации");
-            return "Ошибка при попытке авторизации";
-        }
-    }
 
-    public async Task<string> RegisterAsync(string username, string password)
-    {
-        try
+        public async Task<string> RegisterAsync(string username, string password)
         {
-            if (await _dbContext.Users.AnyAsync(u => u.UserName == username))
+            try
             {
-                return "Пользователь с таким именем уже существует";
+                if (await _dbContext.Users.AnyAsync(u => u.UserName == username))
+                {
+                    return "Пользователь с таким именем уже существует";
+                }
+
+                // Генерируйте соль для пароля
+                var salt = BCrypt.Net.BCrypt.GenerateSalt();
+
+                // Сохраните соль в базе данных
+                var user = new User { UserName = username, Salt = salt };
+                await _dbContext.Users.AddAsync(user);
+
+                // Создайте хеш пароля, включая соль
+                var hashedPassword = BCrypt.Net.BCrypt.HashPassword(password, salt);
+
+                // Сохраните хеш пароля в базе данных
+                user.Password = hashedPassword;
+
+                return await _dbContext.SaveChangesAsync() > 0 ? "Регистрация прошла успешно" : "Ошибка при регистрации";
             }
-
-            var hashedPassword = HashPassword(password);
-            var user = new User { UserName = username, Password = hashedPassword };
-            await _dbContext.Users.AddAsync(user);
-
-            return await _dbContext.SaveChangesAsync() > 0 ? "Регистрация прошла успешно" : "Ошибка при регистрации";
+            catch (Exception ex)
+            {
+                // Обработка ошибок
+                return "Ошибка при регистрации";
+            }
         }
-        catch (Exception ex)
+
+
+        private bool VerifyPassword(string password, string hashedPassword)
         {
-       //     _logger.LogError(ex, "Ошибка при регистрации");
-            return "Ошибка при регистрации";
+            return BCrypt.Net.BCrypt.Verify(password, hashedPassword);
         }
-    }
+
 
         public async Task<bool> CheckUserAuthentication()
         {
@@ -92,13 +112,11 @@ namespace WPFPrism.Infrastructure.Services
             var user = await _dbContext.Users.SingleOrDefaultAsync(u => u.UserName == username);
             if (user == null)
                 throw new Exception("Пользователь не найден");
-
-            user.Password = HashPassword(newPassword);
+            user.Password = BCrypt.Net.BCrypt.HashPassword(newPassword);
             _dbContext.Users.Update(user);
 
             return await _dbContext.SaveChangesAsync() > 0;
         }
-
         public async Task<bool> DeleteUserAsync(string username)
         {
             var user = await _dbContext.Users.SingleOrDefaultAsync(u => u.UserName == username);
@@ -109,7 +127,5 @@ namespace WPFPrism.Infrastructure.Services
 
             return await _dbContext.SaveChangesAsync() > 0;
         }
-
-       
     }
 }

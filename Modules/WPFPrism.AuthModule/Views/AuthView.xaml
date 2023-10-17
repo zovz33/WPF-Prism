@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
              xmlns:conveter="clr-namespace:WPFPrism.Infrastructure.Converters;assembly=WPFPrism.Infrastructure"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors" 
-             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             xmlns:bpb="clr-namespace:WPFPrism.AuthModule.Views"
              Height="400"> 
     <Grid x:Name="MainGrid" VerticalAlignment="Top" HorizontalAlignment="Center">
         <Grid.RowDefinitions>
@@ -38,7 +38,7 @@
                 </Grid.RowDefinitions>
                 <TextBlock Text="Пароль" Style="{StaticResource AuthHintTextBlock}"/>
                 <Border Style="{StaticResource AuthBorderStyle}">
-                    <ui:PasswordBox Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource AuthPassBoxStyle}" /> 
+                    <bpb:BindablePasswordBox Password="{Binding Password, UpdateSourceTrigger=PropertyChanged}"/> 
                 </Border>
             </Grid>
             <TextBlock Foreground="#D1D3D5" Grid.Row="2" Text="Забыли пароль?" HorizontalAlignment="Right" Margin="0,15,10,10"/>
