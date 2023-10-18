@@ -5,6 +5,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Prism.Wpf" Version="8.1.97" />
+    <PackageReference Include="Serilog" Version="3.0.1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\WPFPrism.Infrastructure\WPFPrism.Infrastructure.csproj" /> 

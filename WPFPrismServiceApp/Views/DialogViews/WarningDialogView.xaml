@@ -3,29 +3,18 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:prism="http://prismlibrary.com/"
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
-             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-             Height="70" prism:ViewModelLocator.AutoWireViewModel="True">
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors" prism:ViewModelLocator.AutoWireViewModel="True" Background="Transparent">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding CloseDialogCommand}"/>
         </i:EventTrigger>
-    </i:Interaction.Triggers>
-    <prism:Dialog.WindowStyle>
-        <Style TargetType="Window">
-            <Setter Property="prism:Dialog.WindowStartupLocation" Value="CenterOwner" />
-            <Setter Property="ShowInTaskbar" Value="False"/>
-            <Setter Property="SizeToContent" Value="WidthAndHeight"/>
-            <Setter Property="WindowStyle" Value="None"/>
-            <Setter Property="ResizeMode" Value="NoResize"/> 
-            <Setter Property="BorderThickness" Value="0"/>
-        </Style>
-    </prism:Dialog.WindowStyle>
+    </i:Interaction.Triggers> 
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="80"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <ui:SymbolIcon Symbol="Warning28" FontSize="64" Foreground="Red" />
+        <ui:SymbolIcon Symbol="Warning12" FontSize="64" Foreground="Red" />
         <TextBlock Margin="10 0,30,0"  Grid.Column="1" Text="{Binding Message}"  VerticalAlignment="Center"   FontSize="16" FontFamily="Open Sans" TextWrapping="Wrap"/>
     </Grid>
 </UserControl>

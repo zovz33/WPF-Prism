@@ -5,7 +5,7 @@ using WPFPrism.Infrastructure.Services.Interface;
 
 namespace WPFPrism.ServiceModule.ViewModels
 {
-    public class ServiceViewModel : RegionViewModelBase
+    public class ServiceViewModel : ViewModelBase
     {
 
         #region Fields
@@ -24,7 +24,7 @@ namespace WPFPrism.ServiceModule.ViewModels
         #region Excutes
         #endregion
 
-        public ServiceViewModel(IRegionManager regionManager, IUserService userService) : base(regionManager, userService)
+        public ServiceViewModel(IRegionManager regionManager, IUserService userService) 
         {
             _regionManager = regionManager;
             _userService = userService;

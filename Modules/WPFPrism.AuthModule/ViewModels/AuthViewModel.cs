@@ -51,7 +51,7 @@ namespace WPFPrism.AuthModule.ViewModels
 
         #endregion
 
-        public AuthViewModel(IRegionManager regionManager, IUserService userService, IDialogService dialogService) : base(regionManager, userService)
+        public AuthViewModel(IRegionManager regionManager, IUserService userService, IDialogService dialogService) : base(regionManager)
         {
             _regionManager = regionManager;
             _userService = userService;

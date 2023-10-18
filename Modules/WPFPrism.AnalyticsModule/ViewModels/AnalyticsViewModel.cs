@@ -26,7 +26,7 @@ namespace WPFPrism.AnalyticsModule.ViewModels
         #region Excutes
         #endregion
 
-        public AnalyticsViewModel(IRegionManager regionManager, IUserService userService) : base(regionManager, userService)
+        public AnalyticsViewModel(IRegionManager regionManager, IUserService userService) : base(regionManager)
         {
             _regionManager = regionManager;
 

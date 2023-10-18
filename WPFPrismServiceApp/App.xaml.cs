@@ -4,6 +4,7 @@ using Prism.DryIoc;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Mvvm;
+using Serilog;
 using System;
 using System.Configuration;
 using System.Windows;
@@ -11,11 +12,12 @@ using WPFPrism.AnalyticsModule;
 using WPFPrism.AuthModule;
 using WPFPrism.HomeModule;
 using WPFPrism.Infrastructure;
+using WPFPrism.Infrastructure.Configuration;
 using WPFPrism.Infrastructure.Database;
 using WPFPrism.Infrastructure.Services;
 using WPFPrism.Infrastructure.Services.Interface;
 using WPFPrism.ManagementModule;
-using WPFPrism.ServiceModule;
+using WPFPrism.ServiceModule; 
 using WPFPrismServiceApp.ViewModels;
 using WPFPrismServiceApp.ViewModels.DialogViewModels;
 using WPFPrismServiceApp.Views;
@@ -34,6 +36,7 @@ namespace WPFPrismServiceApp
         {
             base.OnStartup(e);
             MigrateDatabase();
+            Log.Information("Запуск приложения");
         }
 
         private void MigrateDatabase()
@@ -66,13 +69,13 @@ namespace WPFPrismServiceApp
                 optionsBuilder.UseSqlServer(connectionString);
                 return new ApplicationDbContext(optionsBuilder.Options);
             });
-
+            containerRegistry.RegisterSingleton<LoggingConfiguration>();
             #endregion
-            containerRegistry.RegisterSingleton<IApplicationCommands, ApplicationCommands>();
-
+            containerRegistry.RegisterSingleton<IApplicationCommands, ApplicationCommands>(); 
 
             #region Services
-            containerRegistry.RegisterSingleton<IUserService, UserService>();
+            containerRegistry.RegisterSingleton<IUserService, UserService>(); 
+            containerRegistry.RegisterSingleton<ILoggerService, LoggerService>();
             #endregion
 
 

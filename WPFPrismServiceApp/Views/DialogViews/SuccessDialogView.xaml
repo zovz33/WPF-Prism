@@ -4,29 +4,19 @@
              xmlns:prism="http://prismlibrary.com/"
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-             Height="70" prism:ViewModelLocator.AutoWireViewModel="True" >
+             prism:ViewModelLocator.AutoWireViewModel="True" Background="Transparent">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding CloseDialogCommand}"/>
         </i:EventTrigger>
-    </i:Interaction.Triggers>
-    <prism:Dialog.WindowStyle>
-        <Style TargetType="Window">
-            <Setter Property="prism:Dialog.WindowStartupLocation" Value="CenterOwner" />
-            <Setter Property="ShowInTaskbar" Value="False"/>
-            <Setter Property="SizeToContent" Value="WidthAndHeight"/>
-            <Setter Property="WindowStyle" Value="None"/>
-            <Setter Property="ResizeMode" Value="NoResize"/>
-            <Setter Property="BorderThickness" Value="0"/>
-        </Style>
-    </prism:Dialog.WindowStyle>
+    </i:Interaction.Triggers> 
     <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="80"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         
-        <ui:SymbolIcon Symbol="CheckmarkCircle48" FontSize="64" Foreground="Green" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <ui:SymbolIcon Symbol="CheckmarkCircle12" FontSize="64" Foreground="Green" VerticalAlignment="Center" HorizontalAlignment="Center"/>
         <TextBlock Margin="10 0,30,0" Grid.Column="1" Text="{Binding Message}"  VerticalAlignment="Center"   FontSize="16" FontFamily="Open Sans" TextWrapping="Wrap"/>
     </Grid>
 </UserControl>

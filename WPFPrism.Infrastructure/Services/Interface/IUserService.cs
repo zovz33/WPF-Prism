@@ -1,13 +1,10 @@
-﻿using System.Net;
-using System.Security;
-using System.Threading.Tasks;
-using WPFPrism.Infrastructure.Models;
+﻿using WPFPrism.Infrastructure.Models;
 
 namespace WPFPrism.Infrastructure.Services.Interface
 {
     public interface IUserService
     {
-        event EventHandler AuthenticationStatusChanged;  
+        event EventHandler AuthenticationStatusChanged;
         User CurrentUser { get; }
         bool IsAuthenticated { get; }
 
@@ -21,7 +18,10 @@ namespace WPFPrism.Infrastructure.Services.Interface
         Task<bool> DeleteUserAsync(string username);
         Task<bool> CheckUserAuthentication();
 
-
+        Task<string> ChangePasswordAsync(string username, string currentPassword, string newPassword);
+        Task<string> ChangeUsernameAsync(string currentUsername, string newUsername);
+        Task<User> GetCurrentUserInformationAsync();
+        Task<bool> CheckUserPermissionsAsync(string username, List<string> permissions);
 
     }
 }

@@ -1,6 +1,5 @@
 ﻿using Prism.Mvvm;
 using Prism.Navigation;
-using System;
 
 
 namespace WPFPrism.Infrastructure.Base

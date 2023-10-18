@@ -1,18 +1,15 @@
 ﻿using Prism.Regions;
-using System;
-using WPFPrism.Infrastructure.Services.Interface;
 
 namespace WPFPrism.Infrastructure.Base
 {
     public class RegionViewModelBase : ViewModelBase, INavigationAware, IConfirmNavigationRequest
     {
+        private IRegionNavigationJournal _journal;
         protected IRegionManager RegionManager { get; private set; }
-        private readonly IUserService _userService;
 
-        public RegionViewModelBase(IRegionManager regionManager, IUserService userService)
+        public RegionViewModelBase(IRegionManager regionManager)
         {
             RegionManager = regionManager;
-            _userService = userService;
         }
 
         public virtual void ConfirmNavigationRequest(NavigationContext navigationContext, Action<bool> continuationCallback)
@@ -32,9 +29,11 @@ namespace WPFPrism.Infrastructure.Base
 
         public virtual void OnNavigatedTo(NavigationContext navigationContext)
         {
+
         }
+         
+ 
 
 
     }
 }
- 

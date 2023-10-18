@@ -6,8 +6,8 @@ using WPFPrism.Infrastructure.Services.Interface;
 
 namespace WPFPrism.ManagementModule.ViewModels
 {
-    public class ManageViewModel : RegionViewModelBase
-    {
+    public class ManageViewModel : ViewModelBase
+    { 
 
         #region Fields
         private readonly IRegionManager _regionManager;
@@ -25,7 +25,7 @@ namespace WPFPrism.ManagementModule.ViewModels
         #region Excutes
         #endregion
 
-        public ManageViewModel(IRegionManager regionManager, IUserService userService) : base(regionManager, userService)
+        public ManageViewModel(IRegionManager regionManager, IUserService userService)
         {
             _regionManager = regionManager;
         }

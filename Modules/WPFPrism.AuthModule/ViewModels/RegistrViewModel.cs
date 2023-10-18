@@ -9,13 +9,12 @@ using WPFPrism.Infrastructure.Services.Interface;
 
 namespace WPFPrism.AuthModule.ViewModels
 {
-    public class RegistrViewModel : RegionViewModelBase 
+    public class RegistrViewModel : ViewModelBase 
     {
 
         #region Fields
         private readonly IRegionManager _regionManager;
-        private readonly IDialogService _dialogService;
-        private IRegionNavigationJournal _journal;
+        private readonly IDialogService _dialogService; 
         private readonly IUserService _userService;
         #endregion
 
@@ -57,7 +56,7 @@ namespace WPFPrism.AuthModule.ViewModels
 
         #endregion
 
-        public RegistrViewModel(IRegionManager regionManager, IUserService userService, IDialogService dialogService) : base(regionManager, userService)
+        public RegistrViewModel(IRegionManager regionManager, IUserService userService, IDialogService dialogService)  
         {
             _regionManager = regionManager;
             _userService = userService;
@@ -121,7 +120,7 @@ namespace WPFPrism.AuthModule.ViewModels
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Ошибка в методе: {ex}");
+                Console.WriteLine($"Ошибка в ExecuteRegistrationCommand: {ex}");
                 MessageBox.Show(ex.Message);
             }
         }
@@ -131,8 +130,8 @@ namespace WPFPrism.AuthModule.ViewModels
             string loginResult = await _userService.LoginAsync(UserName, Password);
             if (loginResult == "Авторизация успешна")
             {
-                ShowSuccessMessage($"Приветствуем, {UserName}, вы успешно авторизировались!");
                 _regionManager.Regions["ContentRegion"].RequestNavigate("HomeView");
+                ShowSuccessMessage($"Приветствуем, {UserName}, вы успешно авторизировались!");
             }
             else
             {

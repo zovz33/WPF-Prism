@@ -6,7 +6,7 @@ using WPFPrism.Infrastructure.Services.Interface;
 
 namespace WPFPrism.HomeModule.ViewModels
 {
-    public class HomeViewModel : RegionViewModelBase
+    public class HomeViewModel : ViewModelBase
     {
 
         #region Fields
@@ -17,6 +17,9 @@ namespace WPFPrism.HomeModule.ViewModels
         #endregion
 
         #region Properties
+
+
+
         #endregion
 
         #region Commands
@@ -25,7 +28,7 @@ namespace WPFPrism.HomeModule.ViewModels
         #region Excutes
         #endregion
 
-        public HomeViewModel(IRegionManager regionManager, IUserService userService) : base(regionManager, userService)
+        public HomeViewModel(IRegionManager regionManager, IUserService userService)  
         {
             _regionManager = regionManager;
             _userService = userService;

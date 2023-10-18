@@ -3,17 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:prism="http://prismlibrary.com/"  
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
-             Width="350" Height="120" prism:ViewModelLocator.AutoWireViewModel="True">
-    <prism:Dialog.WindowStyle>
-        <Style TargetType="Window">
-            <Setter Property="prism:Dialog.WindowStartupLocation" Value="CenterOwner" />
-            <Setter Property="ShowInTaskbar" Value="False"/>
-            <Setter Property="SizeToContent" Value="WidthAndHeight"/>
-            <Setter Property="WindowStyle" Value="None"/>
-            <Setter Property="ResizeMode" Value="NoResize"/>
-            <Setter Property="BorderThickness" Value="0"/>
-        </Style>
-    </prism:Dialog.WindowStyle>
+             Width="350" Height="120" 
+             Background="Transparent"
+             prism:ViewModelLocator.AutoWireViewModel="True">
+ 
     <Grid x:Name="MainGrid">
         <Grid.RowDefinitions>
             <RowDefinition />
@@ -24,7 +17,7 @@
                 <ColumnDefinition Width="80"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <ui:SymbolIcon Symbol="Info28" FontSize="64" Foreground="Gray"/>
+            <ui:SymbolIcon Symbol="Info12" FontSize="64" Foreground="Gray"/>
             <TextBlock  Grid.Column="1" Text="{Binding Message}" HorizontalAlignment="Left" VerticalAlignment="Center" TextWrapping="Wrap"  FontSize="16" FontFamily="Open Sans" Margin="10 0"/>
         </Grid>
         <Grid Grid.Row="1">

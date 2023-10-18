@@ -32,7 +32,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             
-            <Separator  Grid.RowSpan="4" Background="#202020"  Width="1" Height="Auto" HorizontalAlignment="Right" VerticalAlignment="Stretch"/>
+            <Separator  Grid.RowSpan="4" Background="#202020"  Width="3" Height="Auto" HorizontalAlignment="Right" VerticalAlignment="Stretch"/>
             <Grid x:Name="NavJournalGrid" HorizontalAlignment="Stretch" VerticalAlignment="Top" Grid.Row="0" Margin="15 5">
                 <ui:Button Width="40" HorizontalAlignment="Left"
                 Command="{Binding GoBackCommand}" Visibility="{Binding IsCanExcuteGoBack,Converter={StaticResource boolToVisibilityConverter}}"

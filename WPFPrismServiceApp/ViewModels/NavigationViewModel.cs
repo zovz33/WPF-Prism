@@ -1,13 +1,12 @@
 ﻿using Prism.Commands;
-using Prism.Mvvm;
 using Prism.Regions;
 using Prism.Services.Dialogs;
-using System;
+using WPFPrism.Infrastructure.Base;
 using WPFPrism.Infrastructure.Services.Interface;
 
 namespace WPFPrismServiceApp.ViewModels
 {
-    public class NavigationViewModel : BindableBase, INavigationAware
+    public class NavigationViewModel : ViewModelBase, IRegionMemberLifetime
     {
 
         #region Fields
@@ -15,6 +14,7 @@ namespace WPFPrismServiceApp.ViewModels
         private readonly IRegionManager _regionManager;
         private readonly IUserService _userService;
         private readonly IDialogService _dialogService;
+
         #endregion
 
         #region Properties
@@ -47,9 +47,6 @@ namespace WPFPrismServiceApp.ViewModels
             set { SetProperty(ref _isNotAuthButtonsVisible, value); }
         }
 
-
-
-
         public bool KeepAlive => true;
         #endregion
 
@@ -73,20 +70,22 @@ namespace WPFPrismServiceApp.ViewModels
         #endregion
 
         #region  Excutes
-        private void ExecuteNavigateCommand(string View)
+        private void ExecuteNavigateCommand(string view)
         {
-            View = $"{View}View";
-            _regionManager.Regions["ContentRegion"].RequestNavigate(View, navigationCallback =>
+            string targetView = $"{view}View";
+            if (_journal == null || _journal.CurrentEntry == null || _journal.CurrentEntry.Uri.ToString() != targetView)
             {
-                if ((bool)navigationCallback.Result)
-                {
-                    _journal = navigationCallback.Context.NavigationService.Journal;
-                    Refresh();
-                }
-                else
-                {
-                }
-            });
+                _regionManager.Regions["ContentRegion"].RequestNavigate(targetView, OnNavigationCompleted);
+            }
+        }
+
+        private void OnNavigationCompleted(NavigationResult navigationCallback) 
+        {
+            if ((bool)navigationCallback.Result)
+            {
+                _journal = navigationCallback.Context.NavigationService.Journal; // Ведение журнала навигации  
+            }
+            Refresh();
         }
 
         void ExecuteGoBackCommand()
@@ -102,7 +101,7 @@ namespace WPFPrismServiceApp.ViewModels
             Refresh();
         }
 
-        private void UpdateButtonVisibility() // Видимость кнопок в зависимости от состояния авторизации пользователя
+        private void UpdateButtonVisibility()
         {
             if (_userService.IsAuthenticated)
             {
@@ -114,7 +113,7 @@ namespace WPFPrismServiceApp.ViewModels
                 IsAuthButtonsVisible = true;
                 IsNotAuthButtonsVisible = false;
             }
-            if (_journal != null) 
+            if (_journal != null)
             {
                 _journal.Clear();
             }
@@ -125,9 +124,9 @@ namespace WPFPrismServiceApp.ViewModels
             string userName = _userService.CurrentUser?.UserName;
             if (_userService.IsAuthenticated)
             {
-                _userService.Logout(); 
-                _dialogService.Show("SuccessDialogView", new DialogParameters($"message={userName + ", вы успешно вышли!"}"), null);
+                _userService.Logout();
                 _regionManager.Regions["ContentRegion"].RequestNavigate($"AuthView");
+                _dialogService.Show("SuccessDialogView", new DialogParameters($"message={userName + ", вы успешно вышли!"}"), null);
                 Refresh();
 
             }
@@ -160,32 +159,15 @@ namespace WPFPrismServiceApp.ViewModels
             _dialogService = dialogService;
 
             UpdateButtonVisibility();
-
             _userService.AuthenticationStatusChanged += (sender, args) => // Вызывается при регистрации/авторизации
             {
-                UpdateButtonVisibility(); 
+                UpdateButtonVisibility();
             };
         }
-
         private void Refresh()
         {
             GoBackCommand.RaiseCanExecuteChanged();
             GoForwardCommand.RaiseCanExecuteChanged();
-        }
-
-        public bool IsNavigationTarget(NavigationContext navigationContext)
-        {
-            return false;
-        }
-
-        public void OnNavigatedFrom(NavigationContext navigationContext)
-        {
-
-        }
-
-        public void OnNavigatedTo(NavigationContext navigationContext)
-        {
-            _journal = navigationContext.NavigationService.Journal;
         }
     }
 }
