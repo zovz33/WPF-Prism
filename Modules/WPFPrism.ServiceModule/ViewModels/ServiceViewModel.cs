@@ -24,7 +24,7 @@ namespace WPFPrism.ServiceModule.ViewModels
         #region Excutes
         #endregion
 
-        public ServiceViewModel(IRegionManager regionManager, IUserService userService) 
+        public ServiceViewModel(IRegionManager regionManager, IUserService userService)
         {
             _regionManager = regionManager;
             _userService = userService;

@@ -1,6 +1,14 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
+    <SolidColorBrush Color="#dfe6e9" x:Key="TextColor"/>
+    <SolidColorBrush Color="#362FD9" x:Key="ButtonBackgroundColor"/>
+
+    <SolidColorBrush Color="#1c1b21" x:Key="BackdropColor"/>
+    <SolidColorBrush Color="#353b48" x:Key="CardColor"/>
+    
+    <SolidColorBrush Color="#272829" x:Key="DialogBackgroundColor"/>
+
     <!-- =================================  BRUSHES  ================================= -->
 
     <!--#region Window colors-->
@@ -37,5 +45,4 @@
 
     <Color x:Key="IsMouseOverColor">#26FFFFFF</Color>
     <SolidColorBrush x:Key="IsMouseOverBrush" Color="{DynamicResource IsMouseOverColor}"/>
-
 </ResourceDictionary>

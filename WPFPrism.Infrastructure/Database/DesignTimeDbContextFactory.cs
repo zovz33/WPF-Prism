@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
-using System.Configuration;
 
 namespace WPFPrism.Infrastructure.Database
 {

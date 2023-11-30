@@ -1,14 +1,11 @@
-﻿using Prism.Commands;
-using Prism.Mvvm;
+﻿using Prism.Mvvm;
 using Prism.Regions;
 using WPFPrism.AuthModule.Views;
-using WPFPrism.HomeModule.Views;
-using WPFPrism.Infrastructure.Base;
 using WPFPrismServiceApp.Views;
 
 namespace WPFPrismServiceApp.ViewModels
 {
-    public class MainViewModel  : BindableBase
+    public class MainViewModel : BindableBase
     {
 
         #region Fields
@@ -30,7 +27,7 @@ namespace WPFPrismServiceApp.ViewModels
         #region Excutes
         #endregion
 
-        public MainViewModel(IRegionManager regionManager)  
+        public MainViewModel(IRegionManager regionManager)
         {
             _regionManager = regionManager;
             regionManager.RegisterViewWithRegion("NavigationRegion", typeof(NavigationControl));

@@ -1,5 +1,4 @@
 ﻿using Prism.Services.Dialogs;
-using System;
 using System.Windows;
 
 namespace WPFPrismServiceApp.Views.DialogViews

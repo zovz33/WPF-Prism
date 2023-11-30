@@ -1,7 +1,4 @@
-﻿using System;
-
-
-namespace WPFPrism.Infrastructure.Database
+﻿namespace WPFPrism.Infrastructure.Database
 {
     public class DbInitializer
     {

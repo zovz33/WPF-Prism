@@ -1,15 +1,12 @@
-﻿using System.Runtime.InteropServices;
-using System;
-using System.Windows;
-using System.Windows.Interop;
+﻿using System.Windows;
 
 namespace WPFPrismServiceApp.Views
-{ 
+{
     public partial class MainWindow : Window
     {
         public MainWindow()
         {
             InitializeComponent();
-        } 
+        }
     }
 }

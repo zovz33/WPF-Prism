@@ -9,12 +9,12 @@ using WPFPrism.Infrastructure.Services.Interface;
 
 namespace WPFPrism.AuthModule.ViewModels
 {
-    public class RegistrViewModel : ViewModelBase 
+    public class RegistrViewModel : ViewModelBase
     {
 
         #region Fields
         private readonly IRegionManager _regionManager;
-        private readonly IDialogService _dialogService; 
+        private readonly IDialogService _dialogService;
         private readonly IUserService _userService;
         #endregion
 
@@ -56,7 +56,7 @@ namespace WPFPrism.AuthModule.ViewModels
 
         #endregion
 
-        public RegistrViewModel(IRegionManager regionManager, IUserService userService, IDialogService dialogService)  
+        public RegistrViewModel(IRegionManager regionManager, IUserService userService, IDialogService dialogService)
         {
             _regionManager = regionManager;
             _userService = userService;

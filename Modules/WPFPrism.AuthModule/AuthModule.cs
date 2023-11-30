@@ -1,8 +1,7 @@
-﻿using WPFPrism.AuthModule.ViewModels;
-using WPFPrism.AuthModule.Views;
-using Prism.Ioc;
+﻿using Prism.Ioc;
 using Prism.Modularity;
-using Prism.Regions;
+using WPFPrism.AuthModule.ViewModels;
+using WPFPrism.AuthModule.Views;
 
 namespace WPFPrism.AuthModule
 {

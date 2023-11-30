@@ -31,8 +31,8 @@ namespace WPFPrism.Infrastructure.Base
         {
 
         }
-         
- 
+
+
 
 
     }

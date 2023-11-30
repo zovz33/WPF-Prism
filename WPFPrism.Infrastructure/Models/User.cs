@@ -1,5 +1,4 @@
-﻿using System.Security;
-using WPFPrism.Infrastructure.Base;
+﻿using WPFPrism.Infrastructure.Base;
 
 namespace WPFPrism.Infrastructure.Models
 {

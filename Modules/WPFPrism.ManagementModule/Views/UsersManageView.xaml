@@ -1,0 +1,38 @@
+﻿<UserControl x:Class="WPFPrism.ManagementModule.Views.UsersManageView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:prism="http://prismlibrary.com/" xmlns:vm="clr-namespace:WPFPrism.ManagementModule.ViewModels" 
+             xmlns:conv="clr-namespace:WPFPrism.Infrastructure.Converters;assembly=WPFPrism.Infrastructure">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <TextBlock Grid.Row="0" Text="Manage Users" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Button Content="Добавить" Command="{Binding AddUserCommand}" Style="{StaticResource CRUDButtonStyle}"/>
+            <Button Content="Удалить" Command="{Binding DeleteUserCommand}" Style="{StaticResource CRUDButtonStyle}"/>
+            <Button Content="Редактировать" Command="{Binding EditUserCommand}" Style="{StaticResource CRUDButtonStyle}"/>
+        </StackPanel>
+        <ListView Style="{StaticResource ListViewStyle}" ItemsSource="{Binding Users}" SelectedItem="{Binding SelectedUser}" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource ListViewItemStyle}"/>
+            </ListView.ItemContainerStyle>
+            <ListView.View>
+                <GridView>
+                    <GridView.ColumnHeaderContainerStyle>
+                        <Style TargetType="{x:Type GridViewColumnHeader}" BasedOn="{StaticResource GridViewColumnHeaderStyle}" />
+                    </GridView.ColumnHeaderContainerStyle>
+                    <GridViewColumn Header="ID" DisplayMemberBinding="{Binding Path=Id}"/>
+                    <GridViewColumn Header="Юзернейм" DisplayMemberBinding="{Binding Path=UserName}"/>
+                    <GridViewColumn Header="Пароль" DisplayMemberBinding="{Binding Path=Password}"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+
+
+    </Grid>
+</UserControl>

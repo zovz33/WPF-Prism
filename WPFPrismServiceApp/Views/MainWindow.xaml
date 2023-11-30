@@ -4,8 +4,9 @@
         xmlns:prism="http://prismlibrary.com/"  
         prism:ViewModelLocator.AutoWireViewModel="True"
         Title="{Binding Title}" WindowStartupLocation="CenterScreen" 
-        ResizeMode="CanResize" AllowsTransparency="False"
-        Style="{StaticResource {x:Type Window}}" > 
+       
+        ResizeMode="CanResize" AllowsTransparency="False" xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        Style="{StaticResource {x:Type Window}}" >
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />

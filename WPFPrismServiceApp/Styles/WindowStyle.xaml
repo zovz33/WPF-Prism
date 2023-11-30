@@ -1,7 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
                     xmlns:effects="http://schemas.microsoft.com/netfx/2009/xaml/presentation"  
-                    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml" 
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
                     x:Class="WPFPrismServiceApp.Styles.Window" >
 
     <Style TargetType="{x:Type Button}" x:Key="WindowChromeButtonStyle">
@@ -66,6 +66,7 @@
 
 
     <ControlTemplate x:Key="WindowTemplate" TargetType="{x:Type Window}">
+
         <Grid>
             <Border
                 Name="WindowBorder"
@@ -81,9 +82,9 @@
                           Grid.Row="0"
                           Height="32"
                           Background="{DynamicResource  TitleBarBackgroundBrush}">
-                        <ui:SymbolIcon Symbol="CodeCsRectangle16" HorizontalAlignment="Left"
-                            VerticalAlignment="Center"
-                            Margin="10.5 0 0 0" />
+                        <materialDesign:PackIcon Kind="MicrosoftWindows" 
+                                                 Width="18" Height="18" Margin="10 0 0 0"
+                                                 VerticalAlignment="Center"  HorizontalAlignment="Left"/>
                         <TextBlock
                             HorizontalAlignment="Left"
                             VerticalAlignment="Center"
@@ -149,10 +150,11 @@
         <Setter Property="Width" Value="1500"/>
         <Setter Property="Height" Value="800"/>
         <Setter Property="Foreground" Value="White"/>
-        <Setter Property="UseLayoutRounding" Value="True"/>
+        <Setter Property="UseLayoutRounding" Value="True" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="OverridesDefaultStyle" Value="True" /> 
         <Setter Property="TextOptions.TextFormattingMode" Value="Ideal"/>
         <Setter Property="TextOptions.TextRenderingMode" Value="ClearType"/>
-        
         <Setter Property="RenderOptions.BitmapScalingMode" Value="Linear" /> 
         <Setter Property="RenderOptions.EdgeMode" Value="Unspecified" /> 
         <Setter Property="SnapsToDevicePixels" Value="True" />

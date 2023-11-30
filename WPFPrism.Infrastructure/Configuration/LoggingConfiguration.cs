@@ -7,8 +7,8 @@ namespace WPFPrism.Infrastructure.Configuration
     {
         public ILogger CreateLogger()
         {
-            string documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-             
+            string documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments); // Логирование в папку мои документы
+
             string logFilePath = Path.Combine(documentsPath, @"ServiceApplication/ServiceAppLogs.txt");
 
             return new LoggerConfiguration()

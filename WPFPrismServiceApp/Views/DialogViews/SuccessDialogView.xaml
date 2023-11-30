@@ -2,9 +2,8 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:prism="http://prismlibrary.com/"
-             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
-             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-             prism:ViewModelLocator.AutoWireViewModel="True" Background="Transparent">
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors" xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             prism:ViewModelLocator.AutoWireViewModel="True" Style="{StaticResource StyleDialog}">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding CloseDialogCommand}"/>
@@ -15,8 +14,8 @@
             <ColumnDefinition Width="80"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        
-        <ui:SymbolIcon Symbol="CheckmarkCircle12" FontSize="64" Foreground="Green" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+
+        <materialDesign:PackIcon Kind="CheckCircleOutline" Width="40" Height="40" Foreground="Green" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         <TextBlock Margin="10 0,30,0" Grid.Column="1" Text="{Binding Message}"  VerticalAlignment="Center"   FontSize="16" FontFamily="Open Sans" TextWrapping="Wrap"/>
     </Grid>
 </UserControl>

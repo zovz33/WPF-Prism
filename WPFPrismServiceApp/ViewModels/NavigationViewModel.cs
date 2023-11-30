@@ -79,7 +79,7 @@ namespace WPFPrismServiceApp.ViewModels
             }
         }
 
-        private void OnNavigationCompleted(NavigationResult navigationCallback) 
+        private void OnNavigationCompleted(NavigationResult navigationCallback)
         {
             if ((bool)navigationCallback.Result)
             {
@@ -88,7 +88,7 @@ namespace WPFPrismServiceApp.ViewModels
             Refresh();
         }
 
-        void ExecuteGoBackCommand()
+        private void ExecuteGoBackCommand()
         {
             if (_journal != null)
                 _journal.GoBack();

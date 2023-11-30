@@ -1,5 +1,4 @@
 ﻿using Prism.Commands;
-using System;
 
 
 namespace WPFPrism.Infrastructure

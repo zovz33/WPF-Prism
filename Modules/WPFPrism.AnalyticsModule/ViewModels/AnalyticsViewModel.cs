@@ -1,8 +1,6 @@
 ﻿using Prism.Regions;
 using Prism.Services.Dialogs;
-using System;
 using WPFPrism.Infrastructure.Base;
-using WPFPrism.Infrastructure.Services;
 using WPFPrism.Infrastructure.Services.Interface;
 
 namespace WPFPrism.AnalyticsModule.ViewModels

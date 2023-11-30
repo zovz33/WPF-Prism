@@ -1,7 +1,4 @@
-﻿using System.Runtime.InteropServices;
-using System;
-using System.Windows;
-using System.Windows.Interop;
+﻿using System.Windows;
 
 namespace WPFPrismServiceApp.Styles
 {
@@ -11,17 +8,17 @@ namespace WPFPrismServiceApp.Styles
         {
             InitializeComponent();
         }
- 
+
         private void MinimizeButton_OnClick(object sender, RoutedEventArgs e)
         {
-            var window = (System.Windows.Window) ((FrameworkElement) sender).TemplatedParent;
-            SystemCommands.MinimizeWindow(window);    
+            var window = (System.Windows.Window)((FrameworkElement)sender).TemplatedParent;
+            SystemCommands.MinimizeWindow(window);
         }
 
         private void MaximizeRestoreButton_OnClick(object sender, RoutedEventArgs e)
         {
 
-            var window = (System.Windows.Window) ((FrameworkElement) sender).TemplatedParent;
+            var window = (System.Windows.Window)((FrameworkElement)sender).TemplatedParent;
             window.MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight;
             window.MaxWidth = SystemParameters.MaximizedPrimaryScreenWidth;
             if (window.WindowState == WindowState.Normal)
@@ -31,11 +28,11 @@ namespace WPFPrismServiceApp.Styles
             else
                 SystemCommands.RestoreWindow(window);
         }
-        
+
 
         private void CloseButton_OnClick(object sender, RoutedEventArgs e)
         {
-            var window = (System.Windows.Window) ((FrameworkElement) sender).TemplatedParent;
+            var window = (System.Windows.Window)((FrameworkElement)sender).TemplatedParent;
             SystemCommands.CloseWindow(window);
         }
     }

@@ -17,7 +17,7 @@ using WPFPrism.Infrastructure.Database;
 using WPFPrism.Infrastructure.Services;
 using WPFPrism.Infrastructure.Services.Interface;
 using WPFPrism.ManagementModule;
-using WPFPrism.ServiceModule; 
+using WPFPrism.ServiceModule;
 using WPFPrismServiceApp.ViewModels;
 using WPFPrismServiceApp.ViewModels.DialogViewModels;
 using WPFPrismServiceApp.Views;
@@ -71,11 +71,12 @@ namespace WPFPrismServiceApp
             });
             containerRegistry.RegisterSingleton<LoggingConfiguration>();
             #endregion
-            containerRegistry.RegisterSingleton<IApplicationCommands, ApplicationCommands>(); 
+            containerRegistry.RegisterSingleton<IApplicationCommands, ApplicationCommands>();
 
             #region Services
-            containerRegistry.RegisterSingleton<IUserService, UserService>(); 
+            containerRegistry.RegisterSingleton<IUserService, UserService>();
             containerRegistry.RegisterSingleton<ILoggerService, LoggerService>();
+            containerRegistry.RegisterSingleton<IManageService, ManageService>();
             #endregion
 
 
@@ -83,6 +84,8 @@ namespace WPFPrismServiceApp
             containerRegistry.RegisterDialog<AlertDialogView, AlertDialogViewModel>();
             containerRegistry.RegisterDialog<SuccessDialogView, SuccessDialogViewModel>();
             containerRegistry.RegisterDialog<WarningDialogView, WarningDialogViewModel>();
+            containerRegistry.RegisterDialog<AddDialogView, AddDialogViewModel>();
+            containerRegistry.RegisterDialog<UpdateDialogView, UpdateDialogViewModel>();
             containerRegistry.RegisterDialogWindow<DialogWindow>();
         }
 

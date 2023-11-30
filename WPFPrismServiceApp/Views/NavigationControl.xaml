@@ -1,31 +1,12 @@
 ﻿<UserControl x:Class="WPFPrismServiceApp.Views.NavigationControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:WPFPrismServiceApp.Views" 
-             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
-             xmlns:conveter="clr-namespace:WPFPrism.Infrastructure.Converters;assembly=WPFPrism.Infrastructure">
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+             xmlns:conveter="clr-namespace:WPFPrism.Infrastructure.Converters;assembly=WPFPrism.Infrastructure"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
     <UserControl.Resources>
         <conveter:BoolToVisibilityConverter x:Key="boolToVisibilityConverter"/>
-        <Style x:Key="BasedNavTopButton" TargetType="ui:Button" BasedOn="{StaticResource DefaultUiButtonStyle}">
-            <Setter Property="Width" Value="125"/>
-            <Setter Property="Height" Value="Auto"/>
-            <Setter Property="Margin" Value="5"/>
-            <Setter Property="Command" Value="{Binding NavigationCommand}"/>
-        </Style>
-        <Style x:Key="NavTopButton" TargetType="ui:Button" BasedOn="{StaticResource BasedNavTopButton}">
-            <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="HorizontalAlignment" Value="Center"/>
-        </Style>
-        <Style x:Key="NavBottomButton" TargetType="ui:Button" BasedOn="{StaticResource BasedNavTopButton}">
-            <Setter Property="VerticalAlignment" Value="Bottom"/>
-            <Setter Property="HorizontalAlignment" Value="Center"/>
-        </Style>
-
     </UserControl.Resources> 
         <Grid x:Name="NavigationBar" Width="150">
-
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -34,32 +15,31 @@
             
             <Separator  Grid.RowSpan="4" Background="#202020"  Width="3" Height="Auto" HorizontalAlignment="Right" VerticalAlignment="Stretch"/>
             <Grid x:Name="NavJournalGrid" HorizontalAlignment="Stretch" VerticalAlignment="Top" Grid.Row="0" Margin="15 5">
-                <ui:Button Width="40" HorizontalAlignment="Left"
-                Command="{Binding GoBackCommand}" Visibility="{Binding IsCanExcuteGoBack,Converter={StaticResource boolToVisibilityConverter}}"
-                Icon="ArrowLeft48" Appearance="Primary" />
-                <ui:Button Width="40" HorizontalAlignment="Right"
-                Command="{Binding GoForwardCommand}" Visibility="{Binding IsCanExcuteGoForward,Converter={StaticResource boolToVisibilityConverter}}"
-                Icon="ArrowRight48" Appearance="Primary" />
-            </Grid>
+            <Button HorizontalAlignment="Left" Style="{StaticResource NavGoBackForward}" Command="{Binding GoBackCommand}"
+                    Visibility="{Binding IsCanExcuteGoBack,Converter={StaticResource boolToVisibilityConverter}}">
+                <materialDesign:PackIcon Kind="ArrowLeft"  />
+            </Button>
+
+            <Button HorizontalAlignment="Right" Style="{StaticResource NavGoBackForward}" Command="{Binding GoForwardCommand}" 
+                Visibility="{Binding IsCanExcuteGoForward,Converter={StaticResource boolToVisibilityConverter}}">
+                <materialDesign:PackIcon Kind="ArrowRight"/>
+            </Button>
+        </Grid>
             <Grid x:Name="NavTopGrid" Grid.Row="1" Height="Auto" Margin="0 0 0 0" Width="Auto" VerticalAlignment="Top" HorizontalAlignment="Center">
             <StackPanel Orientation="Vertical">
-            <ui:Button Icon="Home32" 
-                Style="{StaticResource NavTopButton}"
+            <Button Style="{StaticResource NavTopButton}"
                 CommandParameter="Home" Content="Главная"                 
                 Visibility="{Binding IsNotAuthButtonsVisible, Converter={StaticResource boolToVisibilityConverter}}"
                 IsEnabled="{Binding IsNotAuthButtonsVisible}"/>
-            <ui:Button Icon="Search48" 
-                Style="{StaticResource NavTopButton}"
+            <Button Style="{StaticResource NavTopButton}"
                 CommandParameter="Service" Content="Услуги"
                 Visibility="{Binding IsNotAuthButtonsVisible, Converter={StaticResource boolToVisibilityConverter}}"
                 IsEnabled="{Binding IsNotAuthButtonsVisible}"/>       
-            <ui:Button Icon="Layer24" 
-                Style="{StaticResource NavTopButton}"
+            <Button Style="{StaticResource NavTopButton}"
                 CommandParameter="Manage" Content="Управление" 
                 Visibility="{Binding IsNotAuthButtonsVisible, Converter={StaticResource boolToVisibilityConverter}}"
                 IsEnabled="{Binding IsNotAuthButtonsVisible}"/>
-                <ui:Button Icon="DataHistogram24" 
-                Style="{StaticResource NavTopButton}"
+                <Button Style="{StaticResource NavTopButton}"
                 CommandParameter="Analytics" Content="Аналитика" 
                 Visibility="{Binding IsNotAuthButtonsVisible, Converter={StaticResource boolToVisibilityConverter}}"
                 IsEnabled="{Binding IsNotAuthButtonsVisible}"/>
@@ -67,26 +47,24 @@
         </Grid>
             <Grid Grid.Row="2" x:Name="BottomNavGrid" HorizontalAlignment="Stretch" VerticalAlignment="Bottom">
             <StackPanel>
-                <ui:Button 
-                Style="{StaticResource NavBottomButton}"
+                <Button Style="{StaticResource NavBottomButton}"
                 CommandParameter="Auth"  Content="Авторизация"
                 Visibility="{Binding IsAuthButtonsVisible, Converter={StaticResource boolToVisibilityConverter}}"
                 IsEnabled="{Binding IsAuthButtonsVisible}"/>
 
-                <ui:Button Appearance="Transparent"  
-                Style="{StaticResource NavBottomButton}"
-                CommandParameter="Registr" Content="Регистрация" 
-                BorderThickness="0"
+                <Button Style="{StaticResource NavBottomButton}"
+                CommandParameter="Registr" Content="Регистрация"
                 Visibility="{Binding IsAuthButtonsVisible, Converter={StaticResource boolToVisibilityConverter}}"
                 IsEnabled="{Binding IsAuthButtonsVisible}"/>
 
 
-                <ui:Button Icon="ArrowExit20"
-                HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10 5 0 5"
+                <Button  HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10 5 0 5"
                 FontSize="20" Background="Transparent" BorderThickness="0"
                 Command="{Binding LogoutCommand}"
                 Visibility="{Binding IsNotAuthButtonsVisible, Converter={StaticResource boolToVisibilityConverter}}"
-                IsEnabled="{Binding IsNotAuthButtonsVisible}"/>
+                IsEnabled="{Binding IsNotAuthButtonsVisible}">
+                    <materialDesign:PackIcon Kind="ExitToApp" />
+                </Button>
             </StackPanel>
             </Grid>
         </Grid> 

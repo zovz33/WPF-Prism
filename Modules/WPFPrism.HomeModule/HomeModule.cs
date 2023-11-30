@@ -1,5 +1,4 @@
-﻿using Microsoft.VisualBasic;
-using Prism.Ioc;
+﻿using Prism.Ioc;
 using Prism.Modularity;
 using WPFPrism.HomeModule.ViewModels;
 using WPFPrism.HomeModule.Views;
@@ -12,7 +11,7 @@ namespace WPFPrism.HomeModule
         {
 
         }
- 
+
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
             containerRegistry.RegisterForNavigation<HomeView, HomeViewModel>();

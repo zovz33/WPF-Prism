@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace WPFPrism.Infrastructure.Services.Interface
+﻿namespace WPFPrism.Infrastructure.Services.Interface
 {
     public interface ILoggerService
     {

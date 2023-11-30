@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WPFPrism.Infrastructure.Database;
+using WPFPrism.Infrastructure.Exceptions;
 using WPFPrism.Infrastructure.Models;
 using WPFPrism.Infrastructure.Services.Interface;
 
@@ -67,7 +68,7 @@ namespace WPFPrism.Infrastructure.Services
 
                 var salt = BCrypt.Net.BCrypt.GenerateSalt();
                 var hashedPassword = HashPasswordWithSalt(password, salt);
-                
+
                 var user = new User { UserName = username, Password = hashedPassword, Salt = salt };
                 await _dbContext.Users.AddAsync(user);
                 int result = await _dbContext.SaveChangesAsync();
@@ -90,6 +91,7 @@ namespace WPFPrism.Infrastructure.Services
             }
         }
 
+
         private string HashPasswordWithSalt(string password, string salt)
         {
             return BCrypt.Net.BCrypt.HashPassword(password, salt);
@@ -108,6 +110,134 @@ namespace WPFPrism.Infrastructure.Services
             AuthenticationStatusChanged?.Invoke(this, EventArgs.Empty);
         }
 
+        //
+
+        public async Task<List<User>> GetAllUsersAsync()
+        {
+            _logger.Information("Запрос списка пользователей");
+            var users = await _dbContext.Users.ToListAsync();
+            return users;
+        }
+
+        public async Task<string> AddUserAsync(User request)
+        {
+            try
+            {
+                if (await _dbContext.Users.AnyAsync(u => u.UserName == request.UserName))
+                {
+                    _logger.Warning("Попытка добавления пользователя с уже существующим именем: {Username}", request.UserName);
+                    return "Пользователь с таким именем уже существует";
+                }
+
+                // Создаем соль и хешируем пароль
+                var salt = BCrypt.Net.BCrypt.GenerateSalt();
+                var hashedPassword = HashPasswordWithSalt(request.Password, salt);
+
+                // Заполняем объект User
+                var user = new User
+                {
+                    UserName = request.UserName,
+                    Password = hashedPassword,
+                    Salt = salt
+                    // Добавьте другие свойства, если необходимо
+                };
+
+                await _dbContext.Users.AddAsync(user);
+                int result = await _dbContext.SaveChangesAsync();
+
+                if (result > 0)
+                {
+                    _logger.Information("Пользователь {Username} успешно добавлен", request.UserName);
+                    return "Добавление пользователя прошло успешно";
+                }
+                else
+                {
+                    _logger.Warning("Ошибка при сохранении пользователя: {Username}", request.UserName);
+                    return "Ошибка при сохранении пользователя";
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "Ошибка при добавлении пользователя: {Username}", request.UserName);
+                return "Ошибка при добавлении пользователя";
+            }
+        }
+
+
+        public async Task<bool> UpdateUserAsync(User request)
+        {
+            try
+            {
+                if (request == null)
+                {
+                    _logger.Warning("Передан пустой объект пользователя для обновления.");
+                    return false;
+                }
+
+                User user = await _dbContext.Users.SingleOrDefaultAsync(u => u.Id == request.Id);
+
+                if (user == null)
+                {
+                    _logger.Warning("Попытка обновления информации для несуществующего пользователя: {Username}", request.UserName);
+                    return false;
+                }
+
+                user.UserName = request.UserName;
+                if (!string.IsNullOrEmpty(request.Password))
+                {
+                    string newSalt = BCrypt.Net.BCrypt.GenerateSalt();
+                    user.Salt = newSalt;
+                    user.Password = HashPasswordWithSalt(request.Password, newSalt);
+                }
+
+                await _dbContext.SaveChangesAsync();
+
+                _logger.Information($"Действие модератор: {CurrentUser.UserName} | Пользователю {user.UserName} успешно изменены данные.");
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "Ошибка при обновлении информации пользователя: {Username}", request.UserName);
+                return false;
+            }
+        }
+
+        public async Task<bool> DeleteUserAsync(int userId)
+        {
+            try
+            {
+                var user = await _dbContext.Users.FindAsync(userId);
+
+                if (user == null)
+                {
+                    _logger.Warning("Попытка удаления несуществующего пользователя с Id: {UserId}", userId);
+                    throw new Exception("Пользователь не найден");
+                }
+
+                _dbContext.Users.Remove(user);
+                int result = await _dbContext.SaveChangesAsync();
+
+                if (result > 0)
+                {
+                    _logger.Information("Пользователь с Id {UserId} успешно удален", userId);
+                    return true;
+                }
+                else
+                {
+                    _logger.Warning("Ошибка при удалении пользователя с Id: {UserId}", userId);
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "Ошибка при удалении пользователя с Id: {UserId}", userId);
+                return false;
+            }
+        }
+
+
+
         public async Task<string> ChangePasswordAsync(string username, string currentPassword, string newPassword)
         {
             try
@@ -120,8 +250,7 @@ namespace WPFPrism.Infrastructure.Services
                     return "Пользователь не найден";
                 }
 
-                string salt = user.Salt;
-                string currentHashedPassword = HashPasswordWithSalt(currentPassword, salt);
+                string currentHashedPassword = HashPasswordWithSalt(currentPassword, user.Salt);
 
                 if (currentHashedPassword == user.Password)
                 {
@@ -129,6 +258,7 @@ namespace WPFPrism.Infrastructure.Services
                     string newSalt = BCrypt.Net.BCrypt.GenerateSalt();
                     user.Salt = newSalt;
                     user.Password = HashPasswordWithSalt(newPassword, newSalt);
+
                     await _dbContext.SaveChangesAsync();
 
                     _logger.Information("Пользователь {Username} успешно сменил пароль", username);
@@ -137,8 +267,13 @@ namespace WPFPrism.Infrastructure.Services
                 else
                 {
                     _logger.Warning("Неудачная попытка смены пароля для пользователя: {Username}", username);
-                    return "Неверный текущий пароль";
+                    throw new InvalidPasswordException(user.Password);
                 }
+            }
+            catch (InvalidPasswordException ex)
+            {
+                _logger.Warning(ex.Message);
+                return ex.Message;
             }
             catch (Exception ex)
             {
@@ -146,6 +281,7 @@ namespace WPFPrism.Infrastructure.Services
                 return "Ошибка при смене пароля";
             }
         }
+
 
         public async Task<string> ChangeUsernameAsync(string currentUsername, string newUsername)
         {
@@ -196,80 +332,9 @@ namespace WPFPrism.Infrastructure.Services
             // Этот метод будет зависеть от вашей системы разрешений и ролей.
 
             // Верните true, если у пользователя есть необходимые разрешения, и false в противном случае.
-            return true;  
+            return true;
         }
 
-        //
 
-        public async Task<List<User>> GetAllUsersAsync()
-        {
-            _logger.Information("Запрос списка пользователей");
-            return await _dbContext.Users.ToListAsync();
-        }
-
-        public async Task<bool> UpdateUserAsync(string username, string newPassword)
-        {
-            try
-            {
-                var user = await _dbContext.Users.SingleOrDefaultAsync(u => u.UserName == username);
-                if (user == null)
-                {
-                    _logger.Warning("Попытка обновления пароля для несуществующего пользователя: {Username}", username);
-                    throw new Exception("Пользователь не найден");
-                }
-
-                user.Password = BCrypt.Net.BCrypt.HashPassword(newPassword);
-                int result = await _dbContext.SaveChangesAsync();
-
-                if (result > 0)
-                {
-                    _logger.Information("Пароль пользователя {Username} успешно обновлен", username);
-                    return true;
-                }
-                else
-                {
-                    _logger.Warning("Ошибка при обновлении пароля для пользователя: {Username}", username);
-                    return false;
-                }
-            }
-            catch (Exception ex)
-            {
-                _logger.Error(ex, "Ошибка при обновлении пароля для пользователя: {Username}", username);
-                return false;
-            }
-        }
-
-        public async Task<bool> DeleteUserAsync(string username)
-        {
-            try
-            {
-                var user = await _dbContext.Users.SingleOrDefaultAsync(u => u.UserName == username);
-
-                if (user == null)
-                {
-                    _logger.Warning("Попытка удаления несуществующего пользователя: {Username}", username);
-                    throw new Exception("Пользователь не найден");
-                }
-
-                _dbContext.Users.Remove(user);
-                int result = await _dbContext.SaveChangesAsync();
-
-                if (result > 0)
-                {
-                    _logger.Information("Пользователь {Username} успешно удален", username);
-                    return true;
-                }
-                else
-                {
-                    _logger.Warning("Ошибка при удалении пользователя: {Username}", username);
-                    return false;
-                }
-            }
-            catch (Exception ex)
-            {
-                _logger.Error(ex, "Ошибка при удалении пользователя: {Username}", username);
-                return false;
-            }
-        }
     }
 }
