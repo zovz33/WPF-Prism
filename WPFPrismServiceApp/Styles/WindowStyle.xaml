@@ -156,9 +156,7 @@
         <Setter Property="TextOptions.TextFormattingMode" Value="Ideal"/>
         <Setter Property="TextOptions.TextRenderingMode" Value="ClearType"/>
         <Setter Property="RenderOptions.BitmapScalingMode" Value="Linear" /> 
-        <Setter Property="RenderOptions.EdgeMode" Value="Unspecified" /> 
-        <Setter Property="SnapsToDevicePixels" Value="True" />
-        <Setter Property="OverridesDefaultStyle" Value="True" />
+        <Setter Property="RenderOptions.EdgeMode" Value="Unspecified" />
         <Setter Property="WindowChrome.WindowChrome">
             <Setter.Value>
                 <WindowChrome
